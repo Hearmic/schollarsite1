@@ -1,0 +1,74 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load custom_tags %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title %} Подробнее {% endblock title %}
+</head>
+
+<body>
+    {% block content %}
+        {{ context }}
+        <h3>{{ suggestion.title }}</h3>
+        <p>{{ suggestion.description }}</p>
+        <p>Предложение сделал(-а): {{ suggestion.user.first_name }} {{ suggestion.user.last_name }}</p>
+        <p>Предложение сделано: {{suggestion.created_date}}</p>
+        {% if suggestion.is_denied %}
+        <p>Предложение отклонено по причине:{{suggestion.denial_reason}}</p>
+        {% endif %}
+
+        {% if not suggestion.is_moderated%} 
+            {% if request.user|has_group:moderators  %}
+                <form action="{% url 'suggestions:moderate_suggestion' suggestion.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Принять (Accept)</button>
+                </form>  
+                <button>
+                    <a href="{% url "suggestions:deny_suggestion" suggestion.id %}">
+                        Отклонить
+                    </a>
+                </button>
+            {% endif %}
+        {% endif %}
+        {% if suggestion.is_denied%}
+            {% if not suggestion.is_moderated %}
+                {% if request.user|has_group:moderators  %}
+                    <form action="{% url 'suggestions:moderate_suggestion' suggestion.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit">Пропустить (Восстановить)</button>
+                    </form>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+        {%if not suggestion.is_denied%}
+            {% if suggestion.is_moderated %}
+                <p>Проголосовало за: {{ suggestion.votes_for }} человек</p>
+                <p>Проголосовало против: {{ suggestion.votes_against }} человек</p>
+                {% if request.user in suggestion.voters_for.all  %}
+                    <p class="already-voted">Вы уже проголосовали за это предложение.</p>
+                {% elif request.user in suggestion.voters_against.all %}
+                    <p class="already-voted">Вы уже проголосовали против этого предложения.</p>
+                {% else %}
+                    <form action="{% url 'suggestions:vote_for' suggestion.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit">Проголосовать за</button>
+                    </form>
+                    <form action="{% url 'suggestions:vote_against' suggestion.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit">Проголосовать против</button>
+                    </form>
+            {% endif %}
+        {% endif %}
+            <a href="{% url 'suggestions:suggestion_list' %}">Вернуться к списку предложений</a>
+            {% else %}
+            <a href="{% url "suggestions:unmoderated_suggestion_list" %}">Вернуться на страницу модерации</a>
+        {% endif %}
+        <div class="delete">
+            {% if request.user.is_staff %}
+            <a href="{% url 'suggestions:delete_suggestion' suggestion.id %}" class="btn">  
+              Удалить
+            </a>
+          {% endif %}
+    {% endblock %}
+</body>

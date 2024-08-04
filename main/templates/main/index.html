@@ -1,0 +1,69 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load custom_tags %} 
+<DOCTYPE html>
+<html >
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title %}Домашняя страница{% endblock %}
+    {% block slylesheet %}
+    <link rel="stylesheet" href= "{% static 'index/cards-styles.css' %}">
+    
+    {% endblock  %}
+  </head>
+  <body>
+    {{ context }}
+{%block content%}
+  <div class="texts">
+    <h2 class="title">Основная страница сайта школы </h2>
+    <h3 class="content"> Тут можно расположить всю нужную информацию</h3>
+    {%if not request.user.is_authenticated%}
+    <p class="login_context">Контент на сайте не доступен для сторонних пользователей</p>   
+  <div class="login_button">
+    <a href="{% url "users:login" %}"></a>
+  </div>
+  {% endif %}
+  {% if request.user.is_authenticated%}
+  <div class="card-container">
+    <a href="{% url "calender:calender_main" %}" >
+    <div class="card">
+      <img src="{% static 'images/1.jpg' %}">
+      <div class="card-content">
+        <h3>Календарь</h3>
+        <p>Расписание, школьные события и многое другое</p>
+        </div>
+    </div>
+  </a>
+    <a href="{% url "menu:menu_display" %}">
+    <div class="card">
+      <img src="{% static 'images/2.jpg' %}" >
+        <div class="card-content">
+          <h3>Меню столовой</h3>
+          <p>Меню столовой</p>
+        </div>
+    </div>
+    </a>
+    <a href="{% url "exit_notes:exit_notes" %}">
+    <div class="card">
+      <img src="{% static 'images/3.jpg' %}">
+      <div class="card-content">
+        <h3>Электронные запсиски</h3>
+        <p>Расписание, школьные события и многое другое</p>
+      </div>
+    </div>
+    </a>
+    {% if request.user|has_group:teachers %}
+    <a href="{% url "repair_requests:request_list" %}" >
+    <div class="card">
+      <img src="{% static 'images/4.jpg' %}" >
+        <div class="card-content">
+          <h3>Запросы нa ремонт</h3>
+          <p>Разместить запрос на ремоннт или замену оборудования</p> 
+        </div>
+    </div>
+    </a>
+  {% endif %}
+{%endif%}
+{% endblock %}
+</body>
+</html>

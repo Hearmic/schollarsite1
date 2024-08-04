@@ -1,0 +1,18 @@
+{% extends "main/base.html" %}
+{% load static %}
+<html>
+    <head>
+        {% block title %}Список всех меню{% endblock title %}
+    </head>
+    <body>
+        {% block content %}
+        <a href= "{% url "menu:create_menu" %}" class='btn'> Создать меню </a>
+            <ul>
+                {% for menu in menus %}
+                    <p>{{ menu.starst_on }}</p>
+                    <p>{{ menu.ends_on }}</p>
+                {% endfor %}
+            </ul>
+        {% endblock content %}
+    </body>
+</html>

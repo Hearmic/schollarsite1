@@ -1,0 +1,34 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %} Unmoderated Suggestions {% endblock %}
+
+{% block content %}
+<a href="{% url "suggestions:suggestion_list" %}">Вернуться на страницу предложений</a>
+<h1>Unmoderated Suggestions</h1>
+<ul>
+  {% for suggestion in suggestions %}
+    {% if request.user.is_staff%}
+      <li>
+        <h1>{{ suggestion.title }}</h1>
+      </li>
+      <p>{{ suggestion.description }}</p>
+      <a href="{% url 'suggestions:suggestion_detail' suggestion.id %}">Подробнее</a>
+    {% endif %}
+  {% endfor %}
+  
+<h1>Отклоненные предложения</h1>
+  {% for suggestion in denied_suggestions %}
+    {% if request.user.is_staff%}
+        <li>
+          <h1>{{ suggestion.title }}</h1>
+        </li>
+        <p>{{ suggestion.description }}</p>
+        <a href="{% url 'suggestions:suggestion_detail' suggestion.id %}">Подробнее</a>
+      {% endif %}
+  {% endfor %}
+  {% if not suggestions %}
+    <p>There are no unmoderated suggestions.</p>
+  {% endif %}
+</ul>
+{% endblock content %}

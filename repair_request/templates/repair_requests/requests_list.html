@@ -1,0 +1,64 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+<DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title %}Suggestion List{% endblock  %} 
+</head>
+
+<body>
+    {% block content %}
+        {% if request.user.is_authenticated %}
+            <h2><a href="{% url 'repair_requests:create_request' %}">Сделать предложение</a></h2>
+            <h2><a href=" {% url "repair_requests:my_requests" %} ">Мои предложения</a></h2>
+        {% endif %}
+        {% if request.user.is_staff %}
+            <h2><a href="{% url  'repair_requests:unmoderated_request_list' %}">Перейти на страницу модерации</a></h2>
+        {% endif %}
+        
+
+        {% if not request.user.is_authenticated %}
+            <p class="login_context">Контент на сайте не доступен для сотронних пользователей</p>
+            <div class="login_button">
+                <a href="{% url 'users:login' %}"> Войти </a>
+            </div>
+        {% endif %}
+        <h1>Список активных запросов:</h1>
+        {% for requests in requests %}
+        {% if not requests.is_complete %}
+       
+                <h3>{{ requests.title }}</h3>
+                <p>{{ requests.description }}</p>
+                <p>Запрос от: {{requests.created_by.first_name}} {{requests.created_by.last_name}}</p>
+                <a href="{% url 'repair_requests:request_detail' requests.id %}">Подробнее</a>
+                {% if request.user.is_staff %}
+                      <a href="{% url 'repair_requests:delete_request' requests.id %}">Удалить</a>
+                {% endif %}
+
+           
+        {% endif %}
+        {% endfor %}
+        <h1>Список выполненных запросов:</h1>
+        {% for requests in requests %}
+        {% if requests.is_complete %}
+
+                <h3>{{ requests.title }}</h3>
+                <p>{{ requests.description }}</p>
+                <p>Запрос от: {{requests.created_by.first_name}} {{requests.created_by.last_name}}</p>
+                <p>Выполненно: {{requests.completed_by.first_name}} {{requests.completed_by.last_name}} </p>
+                <a href="{% url 'repair_requests:request_detail' requests.id %}">Подробнее</a>
+                {% if request.user.is_staff %}
+                      <a href="{% url 'repair_requests:delete_request' requests.id %}">Удалить</a>
+                {% endif %}
+
+
+        {% endif %}
+        {% endfor %}
+    {% endblock content %}
+</body>
+
+</html>

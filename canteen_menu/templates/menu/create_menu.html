@@ -1,0 +1,112 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load custom_tags %}
+<html>
+    <head>
+        {% block title %} Создание нового меню {% endblock title %}
+        {% block stylesheet %}
+        
+        {% endblock stylesheet %}
+    </head>
+    <body>
+        {% block content %}
+        <h1>Создание нового меню</h1>
+        <div class="dropdown">
+            <button onclick="myFunction()" class="dropbtn">Dropdown</button>
+            <div id="myDropdown" class="dropdown-content">
+                <a href="#">Link 1</a>
+                <a href="#">Link 2</a>
+                <a href="#">Link 3</a>
+            </div>
+        </div>
+        <form method="post" >  
+            {% csrf_token %}
+            {{ form.starts_on }}
+            <table>
+                <tr>
+                    <th>Понедельник</th>
+                    <th>Вторник</th>
+                    <th>Среда</th>
+                    <th>Четверг</th>
+                    <th>Пятница</th>
+                    <th>Суббота</th>
+                    <th>Воскресенье</th>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.monday_breakfast }}
+                    </td>
+                    <td>
+                        {{ form.tuesday_breakfast }}
+                    </td>
+                    <td>
+                        {{ form.wednesday_breakfast }}
+                    </td>
+                    <td>
+                        {{ form.thursday_breakfast }}
+                    </td>
+                    <td>
+                        {{ form.friday_breakfast }}
+                    </td>
+                    <td>
+                        {{ form.saturday_breakfast }}
+                    </td>
+                    <td>
+                        {{ form.sunday_breakfast }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.monday_lunch }}
+                    </td>
+                    <td>
+                        {{ form.tuesday_lunch }}
+                    </td>
+                    <td>
+                        {{ form.wednesday_lunch }}
+                    </td>
+                    <td>
+                        {{ form.thursday_lunch }}
+                    </td>
+                    <td>
+                        {{ form.friday_lunch }}
+                    </td>
+                    <td>
+                        {{ form.saturday_lunch }}
+                    </td>
+                    <td>
+                        {{ form.sunday_lunch }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.monday_dinner}}
+                    </td>
+                    <td>
+                        {{ form.tuesday_dinner}}
+                    </td>
+                    <td>
+                        {{ form.wednesday_dinner}}
+                    </td>
+                    <td>
+                        {{ form.thursday_dinner }}
+                    </td>
+                    <td>
+                        {{ form.friday_dinner}}
+                    </td>
+                    <td>
+                        {{ form.saturday_dinner}}
+                    </td>
+                    <td>
+                        {{ form.sunday_dinner }}
+                    </td>
+                </tr>
+            </table>
+            <button type="submit">Сохранть меню</button>
+        </form>
+        {% endblock content %}
+        {% block scripts %}
+        <script src="{% static 'js/dropdown.js' %}"></script>
+        {% endblock scripts %}
+    </body>
+</html>

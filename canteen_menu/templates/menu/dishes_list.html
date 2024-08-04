@@ -1,0 +1,88 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load custom_tags %}
+ <html>
+    <head>
+        {% block title %} Список блюд {% endblock title %}
+    </head>
+    <body>
+        {% block content %}
+            <a href="{% url "menu:create_set" %}">Новый набор</a>
+            <a href="{% url "menu:create_dish" %}">Новое блюдо</a>
+            <a href="{% url "menu:create_drink" %}">Новый напиток</a>
+            <h1>Список блюд</h1>
+            <h2>НА завтрак:</h2>
+            <h3>Блюда:</h3>
+            <ul>
+                {% for dish in breakfast_dishes %}
+                    <h1>{{ dish.name }}</h1>
+                    {% if not dish.possible_allergies.name == None %}
+                        <p>{{ dish.possible_allergies.name }}</p>
+                    {% else %}
+                        <p>Нет возможных аллергий</p>
+                    {% endif %}
+                        <h3>Энергетическая ценность:</h3>
+                        <p>{{ dish.callories }}</p>
+                {% endfor %}
+            </ul>
+            <h3>Напитки:</h3>
+            <ul>
+                {% for drink in drinks %}
+                    <li>
+                        {{ drink.title }}
+                        {{ drink.possible_allergies }}
+                        {{ drink.callories }}
+                    </li>
+                {% endfor %}
+            </ul>
+            <h2>НА обед</h2>
+            <h3>Блюда:</h3>
+            <ul>
+                {% for dish in lunch_dishes %}
+                <h1>{{ dish.name }}</h1>
+                {% if not dish.possible_allergies.name == None %}
+                    <p>{{ dish.possible_allergies.name }}</p>
+                {% else %}
+                    <p>Нет возможных аллергий</p>
+                {% endif %}
+                    <h3>Энергетическая ценность:</h3>
+                    <p>{{ dish.callories }}</p>
+                {% endfor %}
+            </ul>
+            <h3>Напитки:</h3>
+            <ul>
+                {% for drink in drinks %}
+                    <li>
+                        {{ drink.title }}
+                        {{ drink.possible_allergies }}
+                        {{ drink.callories }}
+                    </li>
+                {% endfor %}
+            </ul>
+            <h2>На полдник:</h2>
+            <h3>Блюда:</h3>
+            <ul>
+                {% for dish in dinner_dishes %}
+                <h1>{{ dish.name }}</h1>
+                {% if not dish.possible_allergies.name == None %}
+                    <p>{{ dish.possible_allergies.name }}</p>
+                {% else %}
+                    <p>Нет возможных аллергий</p>
+                {% endif %}
+                    <h3>Энергетическая ценность:</h3>
+                    <p>{{ dish.callories }}</p>
+                {% endfor %}
+            </ul>
+            <h3>Напитки:</h3>
+            <ul>
+                {% for drink in dinner_drinks %}
+                    <li>
+                        {{ drink.title }}
+                        {{ drink.possible_allergies }}
+                        {{ drink.callories }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endblock content %}
+    </body>
+ </html>
