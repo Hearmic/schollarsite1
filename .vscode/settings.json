@@ -1,3 +1,4 @@
 {
-    "css.autoValidation": "Always"
+    "css.autoValidation": "Always",
+    "html.suggest.html5": true
 }

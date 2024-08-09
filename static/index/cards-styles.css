@@ -1,3 +1,22 @@
+.newsbtn{
+  display: flex;
+  justify-content: center;
+}
+.newsbtn a{
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: var(--nav-main);
+  margin: 0 10% 0 10%;
+  width:90%;
+  text-align: center;
+  color: #FFF;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
 .card-container {
     display: flex;
     flex-wrap: wrap;
@@ -67,6 +86,7 @@
 
     .card {
         width: 150px; /* Adjust width as needed */
+        height: fit-content;
         margin: 20px; 
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         background-color: var(--white);
@@ -117,6 +137,9 @@
   
     }
     @media (max-width: 425px) {
+        .container{
+          padding-top: 50px;
+        }
         .card-container {
             display: grid;
             flex-wrap: nowrap;

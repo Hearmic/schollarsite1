@@ -9,27 +9,27 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    {% block slylesheet %}
-    {% endblock  %}
-    <link rel="icon" type="image/x-icon" href="{% static 'index/images/logo.png' %}">
+    {% block stylesheet %}
+    {% endblock %}
+    <link rel="icon" type="image/x-icon" href="{% static 'images/logo.png' %}">
     
-    <title>{% block title%}{%endblock%}</title>
+    <title>{% block title %} {% endblock %}</title>
 </head>
 <body>
-{%if request.user.is_authenticated%}
-  <nav>
-      <div class="nav-content">
+{% if request.user.is_authenticated %}
+    <nav>
+        <div class="nav-content">
         <div class="logo"> 
             <a href="/home"> 
-                <img src="{% static 'index/images/logo.png' %}">
-             </a>
+                <img src="{% static 'images/logo.png' %}">
+            </a>
         </div class="links">
-          <ul class="nav-links">
-              <li><a href="/calender">Календарь</a></li>
-              <li><a href="/suggestions">Предложения</a></li>
-              <li><a href="https://kundelik.kz/userfeed">Дневник</a></li>
-              {% if request.user.is_superuser%}<li><a href="/admin">Админка</a></li>{% endif %}
-          </ul>
+            <ul class="nav-links">
+                <li><a href="/calender">Календарь</a></li>
+                <li><a href="/suggestions">Предложения</a></li>
+                <li><a href="https://kundelik.kz/userfeed">Дневник</a></li>
+                {% if request.user.is_superuser%}<li><a href="/admin">Админка</a></li>{% endif %}
+            </ul>
         </div>
 </nav>
 {% endif %}

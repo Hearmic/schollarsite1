@@ -31,10 +31,13 @@ urlpatterns = [
     path('home/', include('main.urls', namespace='main')),
     path('admin/', admin.site.urls),
     path('suggestions/', include('suggestions.urls',namespace='suggestions')),
+    path('', include('schedules.urls', namespace='schedulers')),
     path('calender/',include('calender.urls', namespace='calender')),
     path('map/',include('map.urls',namespace='map')),                           # Я сомневаюcь что получиться реализовать карту школы через html
     path('exit_notes/', include('exit_notes.urls', namespace='exit_notes')),
     path('users/',include('users.urls', namespace = 'users')),
     path('repair_requests/',include('repair_request.urls', namespace ='repair_requests')),
     path('menu/',include('canteen_menu.urls', namespace='menu')),
+    path('schedules/',include('schedules.urls', namespace='schedules')),
+    path('news/',include('news.urls', namespace='news')),
 ]

@@ -6,31 +6,36 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% block title %}Домашняя страница{% endblock %}
-    {% block slylesheet %}
+    {% block stylesheet %}
     <link rel="stylesheet" href= "{% static 'index/cards-styles.css' %}">
-    
-    {% endblock  %}
+    {% endblock stylesheet %}
   </head>
   <body>
     {{ context }}
-{%block content%}
+  {% block content %}
   <div class="texts">
     <h2 class="title">Основная страница сайта школы </h2>
     <h3 class="content"> Тут можно расположить всю нужную информацию</h3>
     {%if not request.user.is_authenticated%}
-    <p class="login_context">Контент на сайте не доступен для сторонних пользователей</p>   
-  <div class="login_button">
-    <a href="{% url "users:login" %}"></a>
+      <p class="login_context">Контент на сайте не доступен для сторонних пользователей</p>   
+      <div class="btn">
+        <a href="{% url "users:login" %}"></a>
+      </div>
+    {% endif %}
+  </div> 
+
+  <div class="newsbtn">
+    <a href="{% url "news:main" %}">Посмотреть новости школы</a>
   </div>
-  {% endif %}
+  
   {% if request.user.is_authenticated%}
   <div class="card-container">
-    <a href="{% url "calender:calender_main" %}" >
+    <a href="{% url "schedules:main" %}" >
     <div class="card">
       <img src="{% static 'images/1.jpg' %}">
       <div class="card-content">
-        <h3>Календарь</h3>
-        <p>Расписание, школьные события и многое другое</p>
+        <h3>Расписания</h3>
+        <p>Расписание уроков, кружков и школные события</p>
         </div>
     </div>
   </a>
@@ -48,10 +53,28 @@
       <img src="{% static 'images/3.jpg' %}">
       <div class="card-content">
         <h3>Электронные запсиски</h3>
-        <p>Расписание, школьные события и многое другое</p>
+        <p>Запросить записку у родителей и классного рукоаордителя</p>
       </div>
     </div>
     </a>
+    <a href="{% url "main:rules" %}">
+      <div class="card">
+        <img src="{% static 'images/3.jpg' %}">
+        <div class="card-content">
+          <h3>Школьные правила</h3>
+          <p>Узнайте подробнее о правилах в школе</p>
+        </div>
+      </div>
+      </a>
+      <a href="{% url "exit_notes:exit_notes" %}">
+        <div class="card">
+          <img src="{% static 'images/3.jpg' %}">
+          <div class="card-content">
+            <h3>Схемы действий при ЧС</h3>
+            <p>Ознакомиться со схемами действий при ЧС</p>
+          </div>
+        </div>
+        </a>
     {% if request.user|has_group:teachers %}
     <a href="{% url "repair_requests:request_list" %}" >
     <div class="card">
