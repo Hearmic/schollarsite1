@@ -21,23 +21,26 @@ def display_menu (request):
     return render(request, 'menu/menu_main.html', context)  
 
 
-@allowed_user_groups(allowed_groups=['Работник столовой', 'Системный администратор'])
-def display_menu_list (request):
+def display_menu_list(request):
     menus = WeeklyMenus.objects.all()
-    context = {'menus': menus}
-    return render(request,'menu/menu_list.html', context)
-
-def create_menu(request):
-    form = MenuForm(request.POST)
     if request.method == 'POST':
+        form = MenuForm(request.POST)
         if form.is_valid():
-            menu = form.save(commit=False)
-            menu.starts_on = form.cleaned_data['starts_on']
-            menu.ends_on = menu.starts_on + timedelta(days=7)
-            menu.save()
-            return redirect('your_menu_list_view_url')  # Redirect to list view after successful creation
-    context = {'form': form}
-    return render(request, 'menu/create_menu.html', context)
+            form.save()
+            context = {
+                'menus': menus,
+                'form': form
+            }
+            return render(request, 'menu/menu_list.html', context)
+    else:
+        form = MenuForm()
+
+    context = {
+        'menus': menus,
+        'form': form
+    }
+    return render(request, 'menu/menu_list.html', context)
+
     
 def update_menu (request, menu_id) :
     
@@ -105,6 +108,9 @@ def dish_list (request):
     breakfast_drinks = drink.objects.filter(type = "Завтрак")
     lunch_dirinks = drink.objects.filter(type = "Обед")
     dinner_drinks = drink.objects.filter(type = "Полдник")
+    breakfast_mealsets = breakfast_MealSet.objects.all
+    lunch_mealsets =  lunch_MealSet.objects.all
+    dinner_mealsets = dinner_MealSet.objects.all
     context= {
         'lunch_dishes': lunch_dishes,
         'dinner_dishes': dinner_dishes,
@@ -112,6 +118,9 @@ def dish_list (request):
         'breakfast_drinks':breakfast_drinks,
         'lunch_drinks':lunch_dirinks,
         'dinner_drinks':dinner_drinks,
+        'breakfast_mealsets':breakfast_mealsets,
+        'lunch_mealsets':lunch_mealsets,
+        'dinner_mealsets':dinner_mealsets,
         'canteen_worker' : 'Работник столовой',
         'system_administration': 'Системный администратор',
     }

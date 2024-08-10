@@ -44,3 +44,7 @@
 .dropdown:hover .dropbtn {
   background-color: var(--switchers-main);
 }
+.all-container{
+  display: flex;
+  flex-direction: row;
+}

@@ -10,7 +10,6 @@ urlpatterns = [
     path('dishes/', views.dish_list, name= 'dishes_list'), 
     path('create/dish/', views.create_dish, name='create_dish'),
     path('create/drink/', views.create_drink, name='create_drink'),
-    path('menu/create_menu/',views.create_menu, name='create_menu'),
     path('meal_sets/', views.MealSet_list, name='meal_sets'),
     path('meal_sets/create/', views.create_set, name='create_set'),
     path('meal_sets/create/breakfast/', views.create_breakfast_set, name='create_breakfast_set'),

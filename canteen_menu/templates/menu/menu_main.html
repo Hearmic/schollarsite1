@@ -8,8 +8,9 @@
 <body>
   {% block content %}
   {% if request.user|has_group:canteen_worker %}
-    <a href="{% url "menu:menu_list" %}" class='btn'> Список всех меню</a>
+    <a href="{% url "menu:menu_list" %}" class='btn'> Добавить новое меню</a>
     <a href="{% url "menu:dishes_list" %}" class='btn'> Cписок всех блюд</a>
+    <a href="{% url "menu:dishes_list" %}" class='btn'> Добавить новое блюдо</a>
   {% endif %}
   {% if menu %}
     <h1>Weekly Menu - {{ menu.starts_on }} to {{ menu.ends_on }}</h1>
