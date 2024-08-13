@@ -1,0 +1,1 @@
+web gunicorn schollarsite.wsgi:application --log-file -
