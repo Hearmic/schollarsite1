@@ -7,6 +7,7 @@ def index(request):
     context: dict[str,Any]={ # нужна для передачи данных в .html шаблон
     'title': 'Home',
     'teachers':  ['Учитель', 'Классный руководитель', 'Школьная администрация'],
+    'admin': ['Системный администратор']
     }
     return render(request, 'main/index.html', context) #возвращаем рендер .html файла в папке /templates(поиск тут по дефолту)/main/index.html; заполняем данные шаблона переменной 'context'
 

@@ -2,12 +2,14 @@ from django.db import models
 from users.models import User
 
 class Lessons(models.Model):
-    name = models.CharField(max_length=20)
+    lesson_type = models.CharField(max_length=20)
     teacher = models.ForeignKey(User, related_name='lesson_teacher', on_delete = models.CASCADE)
     classroom = models.CharField(max_length=20)
+    taught_from = models.IntegerField(default=1)
+
     def __str__(self):
-        return self.name + '' + self.teacher
-    
+        return self.lesson_type + ' ' + self.teacher.first_name + " " + self.teacher.surname
+
 class school_schedule (models.Model):
     grade = models.IntegerField()
     litera = models.CharField(max_length=1)
@@ -81,6 +83,9 @@ class school_schedule (models.Model):
     sunday_lesson7 = models.ForeignKey(Lessons, related_name='sunday_lesson7',null=True, blank=True, on_delete = models.CASCADE)
     sunday_lesson8 = models.ForeignKey(Lessons, related_name='sunday_lesson8',null=True, blank=True, on_delete = models.CASCADE)
     sunday_lesson9 = models.ForeignKey(Lessons, related_name='sunday_lesson9',null=True, blank=True, on_delete = models.CASCADE)
+
+    def __str__(self):
+        return str(self.grade) + '"' + self.litera + '"'
 
 class event(models.Model):
     starts_on = models.DateField()

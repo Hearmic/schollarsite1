@@ -19,16 +19,17 @@
     {%if not request.user.is_authenticated%}
       <p class="login_context">Контент на сайте не доступен для сторонних пользователей</p>   
       <div class="btn">
-        <a href="{% url "users:login" %}"></a>
+        <a href="{% url "users:login" %}">Войти</a>
       </div>
     {% endif %}
   </div> 
 
+  
+  
+  {% if request.user.is_authenticated%}
   <div class="newsbtn">
     <a href="{% url "news:main" %}">Посмотреть новости школы</a>
   </div>
-  
-  {% if request.user.is_authenticated%}
   <div class="card-container">
     <a href="{% url "schedules:main" %}" >
     <div class="card">
@@ -36,6 +37,15 @@
       <div class="card-content">
         <h3>Расписания</h3>
         <p>Расписание уроков, кружков и школные события</p>
+        </div>
+    </div>
+  </a>
+  <a href="{% url "suggestions:suggestion_list" %}" >
+    <div class="card">
+      <img src="{% static 'images/1.jpg' %}">
+      <div class="card-content">
+        <h3>Предложения</h3>
+        <p>Голосование за предложения от учеников</p>
         </div>
     </div>
   </a>
@@ -52,7 +62,7 @@
     <div class="card">
       <img src="{% static 'images/3.jpg' %}">
       <div class="card-content">
-        <h3>Электронные запсиски</h3>
+        <h3>Электронные записки</h3>
         <p>Запросить записку у родителей и классного рукоаордителя</p>
       </div>
     </div>
@@ -66,7 +76,7 @@
         </div>
       </div>
       </a>
-      <a href="{% url "exit_notes:exit_notes" %}">
+      <a href="{% url "main:emergencies" %}">
         <div class="card">
           <img src="{% static 'images/3.jpg' %}">
           <div class="card-content">
@@ -86,7 +96,18 @@
     </div>
     </a>
   {% endif %}
-{%endif%}
+  {% if request.user|has_group:admin %}
+    <a href="{% url "users:register" %}" >
+    <div class="card">
+      <img src="{% static 'images/4.jpg' %}" >
+        <div class="card-content">
+          <h3>Регистрация</h3>
+          <p>Зарегистрировать нового пользователя</p> 
+        </div>
+    </div>
+    </a>
+  {% endif %}
+{% endif %}
 {% endblock %}
 </body>
 </html>

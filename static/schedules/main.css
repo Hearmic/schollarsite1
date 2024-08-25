@@ -15,6 +15,7 @@
 }
 a{
     text-decoration: none;
+    width:100%
 }
 p{
     margin:0;
@@ -54,6 +55,20 @@ th, td {
     background-color:var(--nav-main);
 }
 
+.btn{
+    background-color: var(--nav-main);
+    color: #fff;
+    width: 300px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: var(--switchers-main);
+}
 .card {
     width: 265px; /* Adjust the width as needed */
     margin: 0.25rem 10px;

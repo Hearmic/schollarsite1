@@ -30,10 +30,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://6172-95-56-229-94.ngrok-free.app',
-    '*'
-]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -136,7 +133,7 @@ AUTH_USER_MODEL = 'users.User'
 
 LANGUAGE_CODE = 'ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Almaty' #UTC/GMT +5
 
 USE_I18N = True
 
@@ -149,6 +146,8 @@ LOGIN_REQUIRED = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),               # Assuming BASE_DIR is the project root 
