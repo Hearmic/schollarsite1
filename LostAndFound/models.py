@@ -1,3 +1,7 @@
 from django.db import models
 
-# Create your models here.
+class Items(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    found_in = models.IntegerField()
+    found_at = models.DateTimeField(auto_now_add=True)
