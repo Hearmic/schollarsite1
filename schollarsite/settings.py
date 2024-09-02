@@ -141,6 +141,7 @@ USE_TZ = True
 
 LOGIN_REQUIRED = True
 
+LOGIN_URL = 'users/login'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/

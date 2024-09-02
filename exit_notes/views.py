@@ -6,8 +6,8 @@ from django.utils import timezone
 from django.shortcuts import render,redirect, get_object_or_404
 from .models import exit_note
 from .forms import ExitNoteForm
-
-
+from django.contrib.auth.decorators import login_required
+@login_required
 def exit_notes_main(request):
     user = request.user
     form = ExitNoteForm()
@@ -40,6 +40,7 @@ def exit_notes_main(request):
     else:
         return render(request,'exit_notes/exit_notes_main.html', context )
 
+@login_required
 def deactivate_expired_notes():
     now = timezone.now()
     expired_notes = exit_note.objects.filter(deactivate_on__lte=now, is_active=True)
@@ -47,6 +48,7 @@ def deactivate_expired_notes():
         note.is_active = False
         note.save()
         
+@login_required
 def exit_notes_details(request, note_id):
     note = exit_note.objects.get(pk=note_id)
     context = {
@@ -58,13 +60,14 @@ def exit_notes_details(request, note_id):
         }
     return render (request, 'exit_notes/exit_note_details.html' , context)
 
+@login_required
 def parent_approve(request,note_id):
     note = exit_note.objects.get(pk=note_id)
     user = request.user
     note.parent_approved = user
     note.save()
 
-
+@login_required
 def teacher_approve(request,note_id):
     note = exit_note.objects.get(pk=note_id)
     user = request.user
@@ -79,6 +82,7 @@ def teacher_approve(request,note_id):
         }
     return render(request, 'exit_notes/exit_note_details.html', context)
 
+@login_required
 def security_approve(request,note_id):
     note = exit_note.objects.get(pk=note_id)
     user = request.user
@@ -95,6 +99,7 @@ def security_approve(request,note_id):
         }
     return render(request, 'exit_notes/exit_note_details.html', context)
 
+@login_required 
 def generate_qr_code(request, note_id):
     note = get_object_or_404(exit_note, id=note_id)
     url = request.build_absolute_url(note.get_absolute_url())
@@ -103,6 +108,7 @@ def generate_qr_code(request, note_id):
     note.qr_code = response
     return response
 
+@login_required
 def deny(request, note_id):
     note = exit_note.objects.get(pk=note_id)
     user = request.user
@@ -118,12 +124,14 @@ def deny(request, note_id):
         }
     return render(request, 'exit_notes/exit_note_details.html', context)
 
+@login_required
 def exit_notes_delete(request, note_id):
     note = exit_note.objects.get(pk=note_id)
     note.is_active = False
     note.save()
     return redirect('exit_notes:exit_notes')
 
+@login_required
 def how_it_works(request):
     context = {
         'moderators': ['Модератор предложений','Школьная администрация','Системный администратор'],

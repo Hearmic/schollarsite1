@@ -13,7 +13,6 @@
         <a href="{% url 'suggestions:suggestion_detail' suggestion.id %}"> <p>Предложение отклоненно по причине: {{suggestion.denial_reason}}</p></a>
         {% elif suggestion.is_moderated %}
         <a href="{% url 'suggestions:suggestion_detail' suggestion.id %}"><p>Прошло модерацию</p></a>
-
         {% else %}
         <a href="{% url 'suggestions:suggestion_detail' suggestion.id %}"><p>Находится на модерации</p></a>
         {% endif %}
@@ -23,16 +22,14 @@
       <div class="suggestion-card">
         <div class="card-content">
           <h3>{{ suggestion.title }}</h3>
-          <p> Вам нравится эта идея?</p>
           <div class="buttons"></div>
             {% if suggestion.is_denied %}
               <a href="{% url 'suggestions:suggestion_detail' suggestion.id %}">Предложение отклоненно по причине: {{suggestion.denial_reason}}</a>
             {% elif suggestion.is_moderated %}
               <a href="{% url 'suggestions:suggestion_detail' suggestion.id %}">Прошло модерацию</a>
             {% else %}
-              <a href="{% url 'suggestions:suggestion_detail' suggestion.id %}">Находится на модерации</a>
+              <a href='suggestions:suggestion_detail'>Находится на модерации</a>
             {% endif %}
-      
           </div> 
           </div>
         </div>

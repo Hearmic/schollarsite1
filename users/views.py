@@ -28,6 +28,7 @@ def logout_user(request):
     logout(request)
     return HttpResponseRedirect(reverse('users:login'))# перенаправление на ссылку с именем "login" в облласти имен "users"
 
+
 def register_user(request):
     User = get_user_model()  # Get the actual user model (custom or default)
     users = User.objects.all()

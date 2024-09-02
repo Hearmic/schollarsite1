@@ -4,10 +4,12 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import Group
+from django.contrib.auth.decorators import login_required
 
 from .models import Suggestion
 from .forms import SuggestionForm, DenialReasonForm  
 
+@login_required
 def create_suggestion(request):
     if request.method == 'POST':
         form = SuggestionForm(request.POST)
@@ -25,20 +27,22 @@ def create_suggestion(request):
     context = {'form': form}
     return render(request, 'suggestions/create_suggestion.html', context)
 
+@login_required
 def my_suggestions(request):
     suggestions = Suggestion.objects.filter(user=request.user)
     context = {'suggestions': suggestions}
     return render(request, 'suggestions/my_suggestions.html', context)
 
+@login_required
 def delete_suggestion(request, suggestion_id):
     suggestion = get_object_or_404(Suggestion, pk=suggestion_id)  # Get suggestion by ID
     suggestion.delete()  # Delete the suggestion
     return redirect('suggestions:suggestion_list')  # Redirect to suggestions list view (replace with your URL name)
     
+@login_required
 def deny_suggestion(request, suggestion_id):
     suggestion = get_object_or_404(Suggestion, pk=suggestion_id)
     denial_reason_form = DenialReasonForm(request.POST)
-
     if request.method == 'POST':
         
         if denial_reason_form.is_valid():
@@ -55,12 +59,13 @@ def deny_suggestion(request, suggestion_id):
     context = {'suggestion': suggestion, 'denial_reason_form': denial_reason_form}
     return render(request, 'suggestions/suggestion_deny.html', context)
 
-
+@login_required
 def suggestion_list(request):
     suggestions = Suggestion.objects.filter(is_moderated=True,is_denied = False).order_by('-votes_for')
     context = {'suggestions': suggestions}
     return render(request, 'suggestions/suggestions_list.html', context)
 
+@login_required
 def suggestion_detail(request, suggestion_id):
     suggestion =Suggestion.objects.get(pk=suggestion_id)
     context = {
@@ -69,6 +74,7 @@ def suggestion_detail(request, suggestion_id):
         }
     return render(request, 'suggestions/suggestion_detail.html', context)
 
+@login_required
 def vote_for(request, suggestion_id):
     suggestion = Suggestion.objects.get(pk=suggestion_id)
     if request.method == 'POST':
@@ -86,6 +92,7 @@ def vote_for(request, suggestion_id):
             return redirect('suggestions:suggestion_list')
     return redirect('suggestions:suggestion_list') 
 
+@login_required
 def vote_against(request, suggestion_id):
     suggestion = Suggestion.objects.get(pk=suggestion_id)
     if request.method == 'POST':
@@ -103,7 +110,7 @@ def vote_against(request, suggestion_id):
             return redirect('suggestions:suggestion_list')
     return redirect('suggestions:suggestion_list')    
 
-
+@login_required
 def unmoderated_suggestion_list(request):
     unmoderated_suggestions = Suggestion.objects.filter(is_moderated=False)
     denied_suggestions = Suggestion.objects.filter(is_denied=True)
@@ -113,23 +120,11 @@ def unmoderated_suggestion_list(request):
         }
     return render(request, 'suggestions/unmoderated_suggestion_list.html', context)
 
+@login_required
 def moderate_suggestion(request, suggestion_id):
-    if request.method == 'POST':
-        try:
-            suggestion = Suggestion.objects.get(pk=suggestion_id)
-            suggestion.is_moderated = True
-            suggestion.is_denied = False
-            suggestion.save()
-            return redirect('suggestions:suggestion_list')
-        except suggestion.DoesNotExist:
-            message = "Suggestion not found."
-            return redirect('suggestions:suggestion_list')
+    suggestion = Suggestion.objects.get(pk=suggestion_id)
+    suggestion.is_moderated = True
+    suggestion.is_denied = False
+    suggestion.save()
+    return redirect('suggestions:suggestion_list')
 
-    else:  # Handle GET request (e.g., display moderation form)
-        try:
-            suggestion = Suggestion.objects.get (pk=suggestion_id)
-            context = {'suggestion': suggestion}
-        except suggestion.DoesNotExist:
-            message = "Suggestion not found."
-            return render(request, 'suggestions_page/moderate_suggestion.html', {'message': message})
-        return render(request, 'suggestions/moderate_suggestion.html', context)
