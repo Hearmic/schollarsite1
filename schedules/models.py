@@ -6,13 +6,13 @@ class Lessons(models.Model):
     teacher = models.ForeignKey(User, related_name='lesson_teacher', on_delete = models.CASCADE)
     classroom = models.CharField(max_length=20)
     taught_from = models.IntegerField(default=1)
-
     def __str__(self):
         return self.lesson_type + ' ' + self.teacher.first_name + " " + self.teacher.surname
 
 class school_schedule (models.Model):
     grade = models.IntegerField()
     litera = models.CharField(max_length=1)
+    group = models.IntegerField(default= 1)
     # Понедельник
     monday_lesson1 = models.ForeignKey(Lessons, related_name='monday_lesson1',null=True, blank=True, on_delete = models.CASCADE)
     monday_lesson2 = models.ForeignKey(Lessons, related_name='monday_lesson2',null=True, blank=True, on_delete = models.CASCADE)

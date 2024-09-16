@@ -50,6 +50,12 @@ th, td {
     transition: transform 0.3s ease;
 }
 
+td a {
+    display: block;
+    height:100%;
+    width:100%;
+}
+
 .td-link:hover {
     transform: scale(1.3);
     background-color:var(--nav-main);

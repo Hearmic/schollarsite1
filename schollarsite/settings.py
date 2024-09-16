@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'debug_toolbar',
     'django_select2',
+    'django_elasticsearch_dsl',
 
     'main',
     'map',
@@ -55,6 +56,8 @@ INSTALLED_APPS = [
     'canteen_menu',
     'schedules',
     'news',
+    'LostAndFound',
+    'KnowledgeBase',
     ]
 
 MIDDLEWARE = [
@@ -72,6 +75,15 @@ REST_FRAMEWORK ={
     'DEFAULT_PERMISSION_CLASSES':[
         'rest_framework.permissions.AllowAny'
     ]
+}
+
+ELASTICSEARCH_URL = 'http://localhost:9200'
+
+ELASTICSEARCH_DSL={
+    'default': {
+        'hosts': 'http://localhost:9200',
+        'http_auth': ('username', 'password')
+    }
 }
 
 CORS_ORIGIN_ALLOW_ALL = True

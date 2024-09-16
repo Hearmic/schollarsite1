@@ -13,7 +13,7 @@ class LoginUserForm(forms.Form):
 class UserCreateForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['username','last_name','first_name', 'surname','password1', 'password2', 'parents' , 'head_teacher']
+        fields = ['username','last_name','first_name', 'surname','password1', 'password2', 'parents']
         
     groups = MultipleChoiceField(
         choices=Group.objects.all().values_list('id', 'name')

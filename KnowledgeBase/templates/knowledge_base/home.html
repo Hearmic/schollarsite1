@@ -1,0 +1,63 @@
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>База знаний - Главная страница</title>
+    {% block stylesheet %}<link rel="stylesheet" href="{% static 'css/style.css' %}">{% endblock stylesheet %}
+</head>
+<body>
+    {% block content %}
+        <header>
+            <h1>База знаний</h1>
+            <!-- Поле поиска -->
+            <form action="" method="GET">
+                <input type="text" name="q" placeholder="Поиск материалов..." value="{{ request.GET.q }}">
+                <button type="submit">Найти</button>
+            </form>
+        </header>
+        <main>
+            <!-- Если есть результаты поиска -->
+            {% if search_results %}
+                <h2>Результаты поиска</h2>
+                <ul>
+                    {% for material in search_results %}
+                        <li>
+                            <a href="{% url 'material_detail' material.id %}">{{ material.title }}</a>
+                            <p>{{ material.description }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+            <!--Если результатов нет показываем самые популярные материалы-->
+            <h2>Рекомендуемые материалы</h2>
+            <ul>
+                {% for material in recommended_materials %}
+                    <li>
+                        <a href="{% url 'material_detail' material.id %}">{{ material.title }}</a>
+                        <p>{{ material.description }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <!-- Пагинация -->
+            <div class="pagination">
+                <span class="step-links">
+                    {% if subjects.has_previous %}
+                        <a href="?page=1">&laquo; Первая</a>
+                        <a href="?page={{ subjects.previous_page_number }}">Предыдущая</a>
+                    {% endif %}
+
+                    <span class="current">
+                        Страница {{ subjects.number }} из {{ subjects.paginator.num_pages }}
+                    </span>
+
+                    {% if subjects.has_next %}
+                        <a href="?page={{ subjects.next_page_number }}">Следующая</a>
+                        <a href="?page={{ subjects.paginator.num_pages }}">Последняя &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        </main>
+    {% endblock content %}
+</body>
+</html>

@@ -44,15 +44,14 @@
                 {% elif request.user in suggestion.voters_against.all %}
                     <p class="already-voted">Вы уже проголосовали против этого предложения.</p>
                 {% else %}
-                    <a "{% url 'suggestions:vote_for' suggestion.id %}" class="btn"> Проголосовать за </a>
-                    <a action="{% url 'suggestions:vote_against' suggestion.id %}" method="post"> Проголосовать против </a>
+                    <a href="{% url 'suggestions:vote_for' suggestion.id %}" class="btn"> Проголосовать за </a>
+                    <a href="{% url 'suggestions:vote_against' suggestion.id %}" class="btn"> Проголосовать против </a>
                 {% endif %}
             {% endif %}
         {% endif %}
-        {% if  not request.user|has_group:moderators %}
-            <a href="{% url 'suggestions:suggestion_list' %}">Вернуться к списку предложений</a>
-            {% else %}
-            <a href="{% url "suggestions:unmoderated_suggestion_list" %}">Вернуться на страницу модерации</a>
+        <a href="{% url 'suggestions:suggestion_list' %}">Выйти к списку предложений</a>
+        {% if request.user|has_group:moderators %}
+            <a href="{% url "suggestions:unmoderated_suggestion_list" %}" class='btn'>Выйти на страницу модерации</a>
         {% endif %}
         <div class="delete">
             {% if request.user.is_staff %}

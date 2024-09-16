@@ -16,17 +16,14 @@
   <div class="texts">
     <h2 class="title">Основная страница сайта школы </h2>
     <h3 class="content"> Тут можно расположить всю нужную информацию</h3>
-    {%if not request.user.is_authenticated%}
+    {% if not request.user.is_authenticated %}
       <p class="login_context">Контент на сайте не доступен для сторонних пользователей</p>   
       <div class="btn">
         <a href="{% url "users:login" %}">Войти</a>
       </div>
     {% endif %}
   </div> 
-
-  
-  
-  {% if request.user.is_authenticated%}
+  {% if request.user.is_authenticated %}
   <div class="newsbtn">
     <a href="{% url "news:main" %}">Посмотреть новости школы</a>
   </div>
@@ -57,6 +54,24 @@
           <p>Меню столовой</p>
         </div>
     </div>
+    </a>
+    <a href="{% url "menu:menu_display" %}">
+      <div class="card">
+        <img src="{% static 'images/2.jpg' %}" >
+          <div class="card-content">
+            <h3>База знаний</h3>
+            <p>Учебные материалы, правила, памятки и тесты.</p>
+          </div>
+      </div>
+    </a>
+    <a href="{% url "menu:menu_display" %}">
+      <div class="card">
+        <img src="{% static 'images/2.jpg' %}" >
+          <div class="card-content">
+            <h3>Для волонтеров</h3>
+            <p>Волонтёрские программы, социальные инициативы и благотворительные акции.</p>
+          </div>
+      </div>
     </a>
     <a href="{% url "exit_notes:exit_notes" %}">
     <div class="card">
