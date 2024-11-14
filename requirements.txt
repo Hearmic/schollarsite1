@@ -10,10 +10,14 @@ Django==5.0.6
 django-appconf==1.0.6
 django-cors-headers==4.4.0
 django-debug-toolbar==4.4.2
+django-elasticsearch-dsl==8.0
 django-heroku==0.3.1
 django-select2==8.2.0
 djangorestframework==3.15.2
 djangorestframework-simplejwt==5.3.1
+elastic-transport==8.15.1
+elasticsearch==8.16.0
+elasticsearch-dsl==8.16.0
 filelock==3.14.0
 gunicorn==23.0.0
 h11==0.14.0
@@ -29,6 +33,7 @@ psycopg2-binary==2.9.9
 PyJWT==2.8.0
 pypng==0.20220715.0
 pyTelegramBotAPI==4.15.4
+python-dateutil==2.9.0.post0
 python-telegram-bot==20.8
 pytz==2024.1
 qrcode==7.4.2
