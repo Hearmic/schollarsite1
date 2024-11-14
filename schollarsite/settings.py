@@ -30,7 +30,7 @@ DEBUG = os.environ.get('DEBUG_STATE')
 
 ALLOWED_HOSTS = ['*']
 
-
+CSRF_TRUSTED_ORIGINS = ['http://0.0.0.0']
 # Application definition
 
 INSTALLED_APPS = [
@@ -165,7 +165,7 @@ LOGIN_URL = 'users/login'
 
 STATIC_URL = 'static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),               # Assuming BASE_DIR is the project root 
