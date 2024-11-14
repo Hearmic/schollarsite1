@@ -120,7 +120,7 @@ DATABASES = {
         'NAME': 'prestige_database',
         'USER': db_user,  
         'PASSWORD': db_password, 
-        'HOST': 'schedules_db',  
+        'HOST': 'db',  
         'PORT': 5432,  
     },
 }
