@@ -1,0 +1,56 @@
+networks:
+  db-network:
+    driver: bridge
+  nginx-network:
+    driver: bridge
+
+services:
+  nginx:
+    build: ./nginx
+    ports:
+      - 80:80
+    depends_on:
+      - elasticsearch
+      - db 
+      - application
+    networks:
+    - nginx-network
+  elasticsearch:
+    build: ./elasticsearch
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    depends_on:
+      - db
+    networks:
+    - nginx-network
+  db:
+    image: postgres
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER} 
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: prestige_database
+    networks:
+    - db-network
+  application:
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER} 
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - SECRET_KEY=${SECRET_KEY}
+      - DEBUG_STATE=${DEBUG_STATE}
+    build: ./schollarsite1
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    networks:
+      - db-network
+      - nginx-network
+
+volumes:
+  postgres_data:
+  esdata:
