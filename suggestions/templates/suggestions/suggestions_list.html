@@ -1,6 +1,6 @@
 {% extends "main/base.html" %}
 {% load static %}
-
+{% load custom_tags %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,7 +19,7 @@
     <div class="top-buttons">
       
       <a href=" {% url "suggestions:my_suggestions" %} " class = "btn">Мои предложения</a>
-      {% if request.user.is_staff %}
+      {% if request.user|has_group:moderators  %}
         <a href="{% url 'suggestions:unmoderated_suggestion_list' %}" class="btn">Перейти на страницу модерации</a>
       {% endif %}
     </div>
@@ -47,7 +47,7 @@
             <div class="suggestion-card">
               <div class="card-content">
                 <h3>{{ suggestion.title }}</h3>
-                <p>{{suggestion.description}}</p>
+                <p>{{ suggestion.description }}</p>
               </div> 
               <div class="vote-counts"> 
                     <p>За: {{ suggestion.votes_for }} </p>

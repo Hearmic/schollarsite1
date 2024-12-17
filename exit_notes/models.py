@@ -1,3 +1,5 @@
+from datetime import timedelta
+from django.utils import timezone
 from django.db import models
 from users.models import User
 from django.urls import reverse
@@ -7,7 +9,7 @@ class exit_note(models.Model):
     title = models.CharField(max_length=20)
     description = models.TextField(null=True, blank=True)
     created_on = models.DateTimeField(auto_now_add=True)
-    deactivate_on = models.DateTimeField()
+    deactivate_on = models.DateTimeField(default=timezone.now() + timedelta(minutes=15))
     created_by = models.ForeignKey(User, related_name='exit_note_created_by', on_delete=models.CASCADE ,null=True, blank=True)
     parent_approved = models.ForeignKey(User, related_name='exit_note_parent_approved', on_delete=models.CASCADE ,null=True, blank=True)
     teacher_approved = models.ForeignKey(User, related_name='exit_note_teacher_approved', on_delete=models.CASCADE ,null=True, blank=True)
@@ -19,3 +21,5 @@ class exit_note(models.Model):
     
     def get_absolute_url(self):
         return reverse('exit_notes_details', args=[str(self.id)])
+    def __str__(self):
+        return self.created_by.first_name + ' ' + self.created_by.last_name + ' ' + self.created_on.strftime('%Y-%m-%d %H:%M:%S')+ ' ' + self.title  

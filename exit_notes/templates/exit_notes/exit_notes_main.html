@@ -1,87 +1,109 @@
 {% extends "main/base.html" %}
 {% load static %}
-<html>
+{% load custom_tags %}
+<!DOCTYPE html>
+<html lang="ru">
 <head>
-    {% block title %}
-        Электронные записки
-    {% endblock title %}
-    {% block slylesheet %}
-    <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href= "{% static 'exit-notes/main-styles.css' %}">
-    {% endblock %}
-    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Записки</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    {% block stylesheet %}<link rel="stylesheet" href="{% static 'exit-notes/main-styles.css' %}">{% endblock %}
 </head>
 <body>
-    {% block content %} 
-    <div class="how-it-works">
-        <h1>Электронные записки</h1>
-        <a href="{% url "exit_notes:how_it_works" %}" class="btn">Как это работает?</a>
+{% block content %}
+{% if debug_state %}
+    {{ request.user.groups.all }}
+    <p>Is Родитель? {{ request.user|has_group:'Родитель' }}</p>
+    <p>Is Классный руководитель? {{ request.user|has_group:'Классный руководитель' }}</p>
+    <p>Is Модератор предложений? {{ request.user|has_group:'Модератор предложений' }}</p>
+    <p>Is Системный администратор? {{ request.user|has_group:'Системный администратор' }}</p>
+{% endif %}
+<div class="main-container">
+    <!-- Секция для отображения заметок -->
+    <div class="notes-section">
+        <h2>Мои записки</h2>
+        <div id="notes-list">
+            {% for note in valid_notes %}
+            <div class="note" 
+                data-id="{{ note.id }}" 
+                data-title="{{ note.title }}" 
+                data-description="{{ note.description }}" 
+                data-date="{{ note.created_on|date:'d.m.Y H:i' }}" 
+                data-parent-approved="{{ note.parent_approved|yesno:'true,false' }}"
+                data-teacher-approved="{{ note.teacher_approved|yesno:'true,false' }}"
+                onclick="openModal(this)">
+                <div class="note-title">{{ note.title }}</div>
+                <div class="note-date">Создана: {{ note.created_on|date:'d.m.Y H:i' }}</div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-      
-    <div class="all-container">
-        <div class= "creation-form">
-            <form method="POST">
-                {% csrf_token %}
-                <div class="fields">
-                    {{ form.as_p }}
-                </div>
-                <div class="button">
-                    <button type="Submit" class="btn"> Отправить записку</button>
-                </div>
-            </form>
-        </div>
-        <div class="list">
-          <h1>Мои записки</h1>
-          <div class="active">
-            <h2>Активные записки</h2>
-            <div class="card-container">
-                {% for note in active_notes %}
-                    <a href="{% url "exit_notes:exit_notes_details" note.id %}"> 
-                        <div class="card">
-                            <h3>{{ note.title }}</h3>
-                            <p>Записки активна, предоставьте её на охране</p>
-                        </div>
-                    </a>
-                {% endfor %}
-            </div>
-            <div class="avaiting_confirmatoion">
-                <h2>Ожидают подтверждения</h2>
-                <div class="card-container"> 
-                    {% for note in awaiting_confirmation_notes %}
-                        <a href="{% url "exit_notes:exit_notes_details" note.id %}"> 
-                            <div class="card">
-                                <h3>{{ note.title }}</h3>
-                                    {% if note.parent_approved is None and note.teacher_approved is not None %}
-                                        <p>Ожидает подтверждения родителя</p>
-                                    {% elif note.parent_approved is not None and note.teacher_approved is None %}
-                                        <p>Ожидает подтверждения классного руководителя</p>
-                                    {% else %}
-                                        <p>Ожидает подтверждения</p>
-                                    {% endif %}
-                            </div>
-                        </a>
-                    {% endfor %}
-                </div>   
-            </div>    
-            <div class="inactive">
-                <h2>Отклоненные</h2>
-                <div class="card-container">
-                    {% for note in denied_notes %}
-                        <a href="{% url "exit_notes:exit_notes_details" note.id %}"> 
-                            <div class="card">
-                                <h3>{{ note.title }}</h3>
-                                {% if note.is_denied == True %}
-                                    <p>Записка отклонена: {{ note.denied_by }}
-                                    </p>
-                                {% endif %}
-                            </div>
-                        </a>
-                    {% endfor %}
-                </div> 
-            </div>
-        </div>
-    </div>            
-    {% endblock content %} 
-</body>
 
+    <div class="separator"></div>
+
+    <!-- Секция для создания новой заметки -->
+    <div class="create-note-section">
+        <h2>Создать записку</h2>
+        <form method="post" id="create-note-form">
+            {% csrf_token %}
+            <label for="note-title">Название (тема) <span id="title-counter">0/15</span></label>
+            <input 
+                type="text" 
+                id="note-title" 
+                name="title" 
+                class="input-title" 
+                placeholder="..." 
+                maxlength="15" 
+                oninput="updateCounter()" 
+                required>
+            <label for="note-description">Описание</label>
+            <textarea 
+                id="note-description" 
+                name="description" 
+                class="input-description" 
+                placeholder="..." 
+                required></textarea>
+            <button type="submit" class="submit-button">Создать</button>
+        </form>
+    </div>
+
+    <!-- Модальное окно для отображения деталей заметки -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modal-note-title"></div>
+                <div class="modal-date" id="modal-note-date"></div>
+            </div>
+            <label>Название (тема)</label>
+            <input type="text" id="modal-title" class="input-title" disabled>
+            <label>Описание</label>
+            <textarea id="modal-description" class="input-description" disabled></textarea>
+            {% if request.user|has_group:'Родитель' %}
+                <form id="parent-approve-form" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="submit-button">Подтвердить</button>
+                </form>
+            {% endif %} 
+            
+            {% if request.user|has_group:'Классный руководитель' %}
+                <form id="teacher-approve-form" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="submit-button">Подтвердить</button>
+                </form>
+            {% endif %}
+            
+            {% if request.user|has_group:'Классный руководитель' or request.user|has_group:'Родитель' %}
+                <form id="deny-form" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="submit-button">Отклонить</button>
+                </form>
+            {% endif %}
+            <img alt="QR Code for Exit Note" id="modal-qr-code">
+        </div>
+    </div>
+</div>
+<script src="{% static 'exit-notes/script.js' %}"></script>
+{% endblock %}
+</body>
 </html>
