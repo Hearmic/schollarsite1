@@ -2,7 +2,6 @@
 {% load static %}
 {% load custom_tags %}
 <!DOCTYPE html>
-<html lang="en">
 
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +9,7 @@
   {% block stylesheet %}
     <link rel="stylesheet" href= "{% static 'suggestions/styles.css' %}">
   {% endblock  %}
+  {% csrf_token %}
 </head>
 
 <body>
@@ -25,38 +25,52 @@
     </div>
     {% endif %}
     
-    <h1 class="title">Заголовок страницы</h1>
+    <h1 class="main-title">Предложения</h1>
     <p class="inform">Здесь отображаются предложения от всех. 
-      Вы можете проголосовать за или против. Каждый голос "за" приблежает предложение к выполнению.
+      Вы можете проголосовать за или против. Каждый голос "за" приблежает предложение к выполнению, каждый голос прот
       </p>
       <p class="call-to-action">
         Не нашли нужного решения?
       </p>
       <a href="{% url 'suggestions:create_suggestion' %}" class="call-to-action-btn">
         Создайте свое предложение!
-      </a> 
-    {% if not request.user.is_authenticated %}
-      <p class="login_context">Контент на сайте не доступен для сторонних пользователей</p>
-      <div class="login_button">
-        <a href="{% url 'users:login' %}"> Войти </a>
-      </div>
-    {% endif %} 
-    <div class="card-container">
+      </a>
+      <div class="cards_container">
         {% for suggestion in suggestions %}
-        <a href="{% url 'suggestions:suggestion_detail' suggestion.id %}" >
-            <div class="suggestion-card">
-              <div class="card-content">
-                <h3>{{ suggestion.title }}</h3>
-                <p>{{ suggestion.description }}</p>
-              </div> 
-              <div class="vote-counts"> 
-                    <p>За: {{ suggestion.votes_for }} </p>
-                    <p>Против: {{ suggestion.votes_against }} </p>
-              </div>
-            </div>
-        </a>
+        <div class="main-container" id="suggestion-{{ suggestion.id }}">
+          <div id="maxForVotes" data-value="{{ max_for_votes }}"></div>
+          <div id="maxAgainstVotes" data-value="{{ max_against_votes }}"></div>
+          <div class="title">{{ suggestion.title }}</div>
+          <div class="description">{{ suggestion.description|truncatechars:50 }}</div>
+          <div class="progress-bar" onclick="openModal('for', {{ suggestion.id }}, 'за')">
+              <div class="label">За</div>
+              <div class="progress" id="progressForBar{{ suggestion.id }}" style="width: {% widthratio suggestion.votes_for suggestion.max_votes_for 100 %};"></div>
+              <div class="count" id="forCount{{ suggestion.id }}">{{ suggestion.votes_for }}/{{ suggestion.max_votes_for }}</div>
+          </div>
+          <div class="progress-bar" onclick="openModal('against', {{ suggestion.id }}, 'против')">
+              <div class="label">Против</div>
+              <div class="progress" id="progressAgainstBar{{ suggestion.id }}" style="width: {% widthratio suggestion.votes_against suggestion.max_votes_against 100 %};"></div>
+              <div class="count" id="againstCount{{ suggestion.id }}">{{ suggestion.votes_against }}/{{ suggestion.max_votes_against }}</div>
+          </div>
+      </div>
         {% endfor %}
       </div>
+      <div id="confirmation-modal" class="confirmation-modal">
+        <div class="modal-content">
+          <p class="modal-title"></p>
+          <form id="approve-form" method="POST">
+            {% csrf_token %}
+            <div class="modal-buttons">
+                <button type="button" class="" onclick="closeModal()">Отмена</button>
+                <button type="button" class="" onclick="confirmVote()">Подтвердить</button>
+            </div>
+        </form>
+        </div>
+      </div>
+      <script src="{% static 'suggestions/script.js' %}"></script>
+    </body>
+    </html>
+    
   {% endblock content %}
 </body>
 

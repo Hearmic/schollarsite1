@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 
 from .models import Suggestion
 from .forms import SuggestionForm, DenialReasonForm  
@@ -58,11 +59,13 @@ def deny_suggestion(request, suggestion_id):
 
 @login_required
 def suggestion_list(request):
-    suggestions = Suggestion.objects.filter(is_moderated=True,is_denied = False).order_by('-votes_for')
+    suggestions = Suggestion.objects.filter(is_moderated=True, is_denied=False).order_by('-votes_for')
     context = {
         'suggestions': suggestions,
-        'moderators': ['Модератор предложений','Школьная администрация','Системный администратор']
-        }
+        'max_for_votes': 500,
+        'max_against_votes': 300,
+        'moderators': ['Модератор предложений', 'Школьная администрация', 'Системный администратор']
+    }
     return render(request, 'suggestions/suggestions_list.html', context)
 
 @login_required
@@ -76,32 +79,27 @@ def suggestion_detail(request, suggestion_id):
 
 @login_required
 def vote_for(request, suggestion_id):
-    suggestion = get_object_or_404(Suggestion, pk=suggestion_id)
-
     if request.method == 'POST':
-        if request.user not in suggestion.voters_for.all():
+        suggestion = get_object_or_404(Suggestion, pk=suggestion_id)
+        if not suggestion.can_vote(request.user):
+            return JsonResponse({'success': False, 'error': 'You are not allowed to vote for this suggestion.'})
+        if request.user not in suggestion.voters_for.all() and suggestion.votes_for < suggestion.max_votes_for:
             suggestion.voters_for.add(request.user)
             suggestion.votes_for += 1
             suggestion.save()
-        context = {'suggestion': suggestion }
-        return render(request, 'suggestions/suggestion_detail.html', context)
-
-    context = {'suggestion': suggestion}
-    return render(request, 'suggestions/suggestion_detail.html', context)
+        return JsonResponse({'success': True, 'votes_for': suggestion.votes_for, 'votes_against': suggestion.votes_against, 'suggestion_id': suggestion.id})
 
 @login_required
 def vote_against(request, suggestion_id):
-    suggestion = get_object_or_404(Suggestion, pk=suggestion_id)
     if request.method == 'POST':
-        if request.user not in suggestion.voters_against.all():
+        suggestion = get_object_or_404(Suggestion, pk=suggestion_id)
+        if not suggestion.can_vote(request.user):
+            return JsonResponse({'success': False, 'error': 'You are not allowed to vote for this suggestion.'})
+        if request.user not in suggestion.voters_against.all() and suggestion.votes_against < suggestion.max_votes_against:
             suggestion.voters_against.add(request.user)
             suggestion.votes_against += 1
             suggestion.save()
-        context = {'suggestion': suggestion}
-        return render(request, 'suggestions/suggestion_detail.html', context)
-
-    context = {'suggestion': suggestion}
-    return render(request, 'suggestions/suggestion_detail.html', context)
+        return JsonResponse({'success': True, 'votes_for': suggestion.votes_for, 'votes_against': suggestion.votes_against, 'suggestion_id': suggestion.id})
 
 @login_required
 def unmoderated_suggestion_list(request):

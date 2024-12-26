@@ -12,3 +12,10 @@ def has_group(user, group_names):
     
     # Проверка на вхождение пользователя в группу
     return user.groups.filter(name__in=group_list).exists()
+
+@register.filter(name='div')
+def div(value, divisor):
+    try:
+        return value / divisor if divisor != 0 else 0
+    except (TypeError, ValueError):
+        return 0
