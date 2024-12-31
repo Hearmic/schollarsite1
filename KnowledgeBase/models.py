@@ -38,6 +38,7 @@ class StudyMaterial(models.Model):
     class Meta:
         ordering = ['-upload_date']  # Сортировка по дате загрузки (по убыванию)
 
+
 # Модель для избранного
 class FavoriteMaterial(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # Пользователь

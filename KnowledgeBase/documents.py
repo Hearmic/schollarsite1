@@ -1,6 +1,6 @@
 # Регистрация документа для Elastic Search (для релевантного поиска в уч.материалах)
 # Материал https://django-elasticsearch-dsl.readthedocs.io/en/latest/quickstart.html
-# Cannot convert model field author to an Elasticsearch field! 
+# Cannot convert model field author to an Elasticsearch field!
 # fix: https://stackoverflow.com/questions/57635588/django-throwing-error-cannot-convert-model-field-category-to-an-elasticsearch-f
 # python3 manage.py search_index --rebuild
 from django_elasticsearch_dsl.registries import registry
