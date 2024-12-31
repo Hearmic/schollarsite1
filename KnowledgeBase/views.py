@@ -128,12 +128,12 @@ def statistics_page(request):
     total_materials = StudyMaterial.objects.count()
     total_subjects = Subject.objects.count()
     most_viewed_material = StudyMaterial.objects.order_by('-views').first()
-    context= {
+    context = {
         'total_materials': total_materials,
         'total_subjects': total_subjects,
         'most_viewed_material': most_viewed_material
     }
-    return render(request,'knowledge_base/statistics.html', context)
+    return render(request, 'knowledge_base/statistics.html', context)
 
 
 @login_required
