@@ -15,10 +15,10 @@ def display_menu(request):
     except WeeklyMenus.DoesNotExist:
         menu = None
     context = {
-    'menu': menu,
-    'canteen_worker': ['Работник столовой']
+        'menu': menu,
+        'canteen_worker': ['Работник столовой']
     }
-    return render(request, 'menu/menu_main.html', context)  
+    return render(request, 'menu/menu_main.html', context)
 
 
 def display_menu_list(request):
@@ -137,6 +137,7 @@ def create_dish(request):
 
 # ------------------------------------------------- Добавление напитков ------------------------------------------------------------
 
+
 def create_drink(request):
     form = DrinkForm(request.POST)
     if request.method == 'POST':
@@ -166,6 +167,8 @@ def MealSet_list(request):
 
 def create_set(request):
     return render(request, 'menu/creation_choice_sets.html')
+
+
 # На завтрак
 def create_breakfast_set(request):
     form = BreakfastSetForm(request.POST)
@@ -187,7 +190,7 @@ def create_lunch_set(request):
             set.save()
             return redirect('menu:sets_list')
     else:
-        return render (request,'menu/create_form.html', {'form': form})
+        return render(request, 'menu/create_form.html', {'form': form})
 
 
 # На полдник
@@ -199,12 +202,12 @@ def create_dinner_set(request):
             set.save()
             return redirect('menu:sets_list')
     else:
-        return render (request, 'menu/create_form.html', {'form': form})
-#------------------------------------------------------Обновление наборов--------------------------------------------------------
+        return render(request, 'menu/create_form.html', {'form': form})
+# ------------------------------------------------------Обновление наборов--------------------------------------------------------
 
 
 # На завтрак
-def update_breakfast_MealSet(request,MealSet_id):
+def update_breakfast_MealSet(request, MealSet_id):
     if request.method == 'POST':
         form = BreakfastSetForm(request.POST)
         MealSet = get_object_or_404(BreakfastMealSet, pk=MealSet_id)
@@ -235,12 +238,11 @@ def update_lunch_MealSet(request, MealSet_id):
         return render(request, 'menu/create_form.html', {'form': form})
 
 
-
 # На полдник
 def update_dinner_MealSet(request, MealSet_id):
     if request.method == 'POST':
         form = DinnerSetForm(request.POST)
-        MealSet = get_object_or_404(DinnerMealSet, pk= MealSet_id)
+        MealSet = get_object_or_404(DinnerMealSet, pk=MealSet_id)
         if form.is_valid():
             MealSet.update(
                 dishes=form.cleaned_data['dishes'],
