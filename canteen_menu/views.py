@@ -1,11 +1,9 @@
 from datetime import timedelta
 from django.shortcuts import render
-from .models import *
-from .forms import *
+from .models import WeeklyMenus, Allergies, Dish, Drink, DinnerMealSet, LunchMealSet, BreakfastMealSet
+from .forms import MenuForm, AddAllergieForm, DrinkForm, BreakfastSetForm, LunchSetForm, DinnerSetForm
 from django.shortcuts import get_object_or_404, redirect
 from datetime import date
-from schollarsite.decorators import allowed_user_groups
-from schollarsite.global_var import User_roles
         
         
 # Create your views here.
@@ -86,7 +84,7 @@ def update_menu (request, menu_id) :
 
 def create_allergies(request):
     form =AddAllergieForm(request.POST)
-    object = allergies.objects.all()
+    object = Allergies.objects.all()
     if request.method == 'POST':
         if form.is_valid():
             allergie = form.save(commit=False)
@@ -96,21 +94,21 @@ def create_allergies(request):
         return render(request, 'menu/create_allergies.html',{'form': form, 'allergies': object})
 
 def delete_allergies(request, allergies_id):
-    allergie = allergies.objects.filter(pk = allergies_id)
+    allergie = Allergies.objects.filter(pk = allergies_id)
     allergie.delete()
     return redirect('menu:allergies_list')  
 
 #---------------------------------------------------Чпичок всех блюд и напитков--------------------------------------------------
 def dish_list (request):
-    breakfast_dishes = dish.objects.filter(type = "Завтрак")
-    lunch_dishes = dish.objects.filter(type = "Обед")
-    dinner_dishes = dish.objects.filter(type = "Полдник")
-    breakfast_drinks = drink.objects.filter(type = "Завтрак")
-    lunch_dirinks = drink.objects.filter(type = "Обед")
-    dinner_drinks = drink.objects.filter(type = "Полдник")
-    breakfast_mealsets = breakfast_MealSet.objects.all
-    lunch_mealsets =  lunch_MealSet.objects.all
-    dinner_mealsets = dinner_MealSet.objects.all
+    breakfast_dishes = Dish.objects.filter(type = "Завтрак")
+    lunch_dishes = Dish.objects.filter(type = "Обед")
+    dinner_dishes = Dish.objects.filter(type = "Полдник")
+    breakfast_drinks = Drink.objects.filter(type = "Завтрак")
+    lunch_dirinks = Drink.objects.filter(type = "Обед")
+    dinner_drinks = Drink.objects.filter(type = "Полдник")
+    breakfast_mealsets = BreakfastMealSet.objects.all
+    lunch_mealsets =  LunchMealSet.objects.all
+    dinner_mealsets = DinnerMealSet.objects.all
     context= {
         'lunch_dishes': lunch_dishes,
         'dinner_dishes': dinner_dishes,
@@ -146,9 +144,9 @@ def create_drink(request):
 
 #------------------------------------------------------Список наборов блюд-----------------------------------------------------
 def MealSet_list (request):
-    breakfast_sets = breakfast_MealSet.objects.all()
-    lunch_sets = lunch_MealSet.objects.all()
-    dinner_sets = dinner_MealSet.objects.all()
+    breakfast_sets = BreakfastMealSet.objects.all()
+    lunch_sets = LunchMealSet.objects.all()
+    dinner_sets = DinnerMealSet.objects.all()
     context= {
         
         'lunch_sets': lunch_sets,
@@ -162,7 +160,7 @@ def MealSet_list (request):
 
 def create_set (request):
     return render(request, 'menu/creation_choice_sets.html')
-#---На завтрак---#
+# На завтрак
 def create_breakfast_set (request):
     form = BreakfastSetForm(request.POST)
     if request.method == 'POST':
@@ -173,7 +171,7 @@ def create_breakfast_set (request):
     else:
         return render (request,'menu/create_form.html', {'form': form})
     
-#---На обед---#
+# На обед
 def create_lunch_set (request):
     form = LunchSetForm(request.POST)
     if request.method == 'POST':
@@ -184,7 +182,7 @@ def create_lunch_set (request):
     else:
         return render (request,'menu/create_form.html', {'form': form})
 
-#---На полдник---#
+# На полдник
 def create_dinner_set (request):
     form = DinnerSetForm(request.POST)
     if request.method == 'POST':
@@ -196,11 +194,11 @@ def create_dinner_set (request):
         return render (request,'menu/create_form.html', {'form': form})
 #------------------------------------------------------Обновление наборов--------------------------------------------------------
 
-#---На завтрак---#
+# На завтрак
 def update_breakfast_MealSet(request,MealSet_id):
     if request.method == 'POST':
         form = BreakfastSetForm(request.POST)
-        MealSet = get_object_or_404(breakfast_MealSet, pk= MealSet_id)
+        MealSet = get_object_or_404(BreakfastMealSet, pk= MealSet_id)
         if form.is_valid():
             MealSet.update(
                 dishes = form.cleaned_data['dishes'],
@@ -212,11 +210,11 @@ def update_breakfast_MealSet(request,MealSet_id):
     else:
         return render (request,'menu/create_form.html', {'form': form})
     
-#---На обед---#    
+# На обед
 def update_lunch_MealSet(request, MealSet_id):
     if request.method == 'POST':
         form = LunchSetForm(request.POST)
-        MealSet = get_object_or_404(lunch_MealSet, pk= MealSet_id)
+        MealSet = get_object_or_404(LunchMealSet, pk= MealSet_id)
         if form.is_valid():
             MealSet.update(
                 dishes = form.cleaned_data['dishes'],
@@ -228,11 +226,11 @@ def update_lunch_MealSet(request, MealSet_id):
     else:
         return render (request,'menu/create_form.html', {'form': form})
     
-#---На полдник---#
+# На полдник
 def update_dinner_MealSet(request, MealSet_id):
     if request.method == 'POST':
         form = DinnerSetForm(request.POST)
-        MealSet = get_object_or_404(dinner_MealSet, pk= MealSet_id)
+        MealSet = get_object_or_404(DinnerMealSet, pk= MealSet_id)
         if form.is_valid():
             MealSet.update(
                 dishes = form.cleaned_data['dishes'],

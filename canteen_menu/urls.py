@@ -5,9 +5,9 @@ from . import views
 app_name = 'menu'
 
 urlpatterns = [
-    path('',views.display_menu, name= 'menu_display'),
+    path('', views.display_menu, name='menu_display'),
     path("menu_list/", views.display_menu_list, name="menu_list"),
-    path('dishes/', views.dish_list, name= 'dishes_list'), 
+    path('dishes/', views.dish_list, name='dishes_list'),
     path('create/dish/', views.create_dish, name='create_dish'),
     path('create/drink/', views.create_drink, name='create_drink'),
     path('meal_sets/', views.MealSet_list, name='meal_sets'),
