@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=200)),
-                ('description', models.TextField(blank=True, null=True)),
+                ('description', models.TextField(blank=True)),
             ],
         ),
         migrations.CreateModel(
@@ -42,10 +42,10 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=255)),
-                ('description', models.TextField(blank=True, null=True)),
+                ('description', models.TextField(blank=True)),
                 ('upload_date', models.DateTimeField(auto_now_add=True)),
                 ('files', models.FileField(blank=True, null=True, upload_to='materials/files/')),
-                ('link', models.URLField(blank=True, null=True)),
+                ('link', models.URLField(blank=True)),
                 ('views', models.IntegerField(blank=True, null=True)),
                 ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
