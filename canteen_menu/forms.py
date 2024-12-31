@@ -1,6 +1,7 @@
 from django import forms
 from .models import Allergies, BreakfastMealSet, LunchMealSet, DinnerMealSet, Dish, Drink, WeeklyMenus
 
+
 # Form for Weekly Menus
 class MenuForm(forms.ModelForm):
     class Meta:
@@ -13,7 +14,7 @@ class MenuForm(forms.ModelForm):
 
 # --------------------- Creation of Meal Sets ---------------------
 
-# Breakfast Set
+
 class BreakfastSetForm(forms.ModelForm):
     class Meta:
         model = BreakfastMealSet
@@ -30,7 +31,7 @@ class BreakfastSetForm(forms.ModelForm):
         required=True,
     )
 
-# Lunch Set
+
 class LunchSetForm(forms.ModelForm):
     class Meta:
         model = LunchMealSet
@@ -47,7 +48,7 @@ class LunchSetForm(forms.ModelForm):
         required=True,
     )
 
-# Dinner Set
+
 class DinnerSetForm(forms.ModelForm):
     class Meta:
         model = DinnerMealSet
@@ -84,6 +85,7 @@ class DishForm(forms.ModelForm):
 
 # --------------------- Creation of Drinks ---------------------
 
+
 class DrinkForm(forms.ModelForm):
     class Meta:
         model = Drink
@@ -101,6 +103,7 @@ class DrinkForm(forms.ModelForm):
     )
 
 # --------------------- Adding Allergies ---------------------
+
 
 class AddAllergieForm(forms.ModelForm):
     class Meta:
