@@ -3,22 +3,72 @@ name: Super-linter
 on: push
 
 jobs:
-  super-lint:
-    name: Lint code base
+  lint:
+    name: Lint and Check Code Quality
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Run Super-linter
-        uses: github/super-linter@latest
-        env: 
-          DEFAULT_BRANCH: main
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Run Flake8 (with Django plugin) using Docker (Python 3.12.2)
+      - name: Run Flake8
+        uses: docker://python:3.12.2
+        with:
+          args: |
+            pip install flake8 flake8-django &&
+            flake8 --max-line-length=120 .
+
+      # Run Pylint using Docker (Python 3.12.2)
+      - name: Run Pylint
+        uses: docker://python:3.12.2
+        with:
+          args: |
+            pip install pylint &&
+            pylint --max-line-length=120 your_project/
+
+      # Run Black (auto-formatting) using Docker (Python 3.12.2)
+      - name: Run Black
+        uses: docker://python:3.12.2
+        with:
+          args: |
+            pip install black &&
+            black --check --diff .
+
+      # Run Mypy (type checking) using Docker (Python 3.12.2)
+      - name: Run Mypy
+        uses: docker://python:3.12.2
+        with:
+          args: |
+            pip install mypy &&
+            mypy your_project/
+
+      # Run HTMLLint using Docker (Node.js)
+      - name: Run HTMLLint
+        uses: docker://node:16
+        with:
+          args: |
+            npm install -g htmlhint &&
+            htmlhint ./**/*.html
+
+      # Run Stylelint (CSS Linting) using Docker (Node.js)
+      - name: Run Stylelint
+        uses: docker://node:16
+        with:
+          args: |
+            npm install -g stylelint &&
+            stylelint "**/*.css"
+
+      # Run ESLint (JavaScript Linting) using Docker (Node.js)
+      - name: Run ESLint
+        uses: docker://node:16
+        with:
+          args: |
+            npm install -g eslint &&
+            eslint ./**/*.js
 
   deploy:
     runs-on: ubuntu-latest
-    needs: super-lint
+    needs: lint
 
     steps:
       - name: Checkout code
