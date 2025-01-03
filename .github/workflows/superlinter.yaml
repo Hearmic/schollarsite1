@@ -20,7 +20,7 @@ jobs:
         uses: docker://python:3.12.2
         with:
           args: |
-            pip install black 
+            pip install black &&
               black --check .
       # Run Mypy (type checking) using Docker (Python 3.12.2)
       - name: Run Mypy
