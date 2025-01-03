@@ -14,7 +14,8 @@ jobs:
         uses: github/super-linter@latest
         env: 
           DEFAULT_BRANCH: main
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}'
+          LINTER_RULES_PATH: .flake8
 
   deploy:
     runs-on: ubuntu-latest
