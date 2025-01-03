@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('is_denied', models.BooleanField(default=False)),
                 ('votes_for', models.IntegerField(default=0)),
                 ('votes_against', models.IntegerField(default=0)),
-                ('denial_reason', models.CharField(blank=True, max_length=100, null=True, verbose_name='Причина отказа')),
+                ('denial_reason', models.CharField(blank=True, max_length=100, verbose_name='Причина отказа')),
             ],
         ),
     ]

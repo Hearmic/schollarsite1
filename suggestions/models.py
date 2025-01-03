@@ -3,6 +3,7 @@ from users.models import User
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import Group
 
+
 class Suggestion(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
@@ -17,7 +18,7 @@ class Suggestion(models.Model):
     voters_for = models.ManyToManyField(User, related_name='for_suggestions', blank=True)
     voters_against = models.ManyToManyField(User, related_name='against_suggestions', blank=True)
     restricted_to_groups = models.ManyToManyField(Group, blank=True)
-    denial_reason = models.CharField(max_length=100, verbose_name= "Причина отказа", null=True, blank=True)
+    denial_reason = models.CharField(max_length=100, verbose_name="Причина отказа", blank=True)
 
     def has_voted_for(self, user):
         return user in self.voters_for.all()
