@@ -21,7 +21,7 @@ jobs:
         with:
           args: |
             pip install black 
-              black --check --diff .
+              black --check .
       # Run Mypy (type checking) using Docker (Python 3.12.2)
       - name: Run Mypy
         uses: docker://python:3.12.2
