@@ -15,42 +15,42 @@ jobs:
         with:
           args: |
             pip install flake8 flake8-django 
-            flake8 --max-line-length=400 .
+              flake8 --max-line-length=400 .
       # Run Black (auto-formatting) using Docker (Python 3.12.2)
       - name: Run Black
         uses: docker://python:3.12.2
         with:
           args: |
             pip install black 
-            black --check --diff .
+              black --check --diff .
       # Run Mypy (type checking) using Docker (Python 3.12.2)
       - name: Run Mypy
         uses: docker://python:3.12.2
         with:
           args: |
             pip install mypy 
-            mypy your_project/
+              mypy schollarsite1/
       # Run HTMLLint using Docker (Node.js)
       - name: Run HTMLLint
         uses: docker://node:16
         with:
           args: |
             npm install -g htmlhint 
-            htmlhint ./**/*.html
+              htmlhint ./**/*.html
       # Run Stylelint (CSS Linting) using Docker (Node.js)
       - name: Run Stylelint
         uses: docker://node:16
         with:
           args: |
             npm install -g stylelint 
-            stylelint "**/*.css"
+              stylelint "**/*.css"
       # Run ESLint (JavaScript Linting) using Docker (Node.js)
       - name: Run ESLint
         uses: docker://node:16
         with:
           args: |
             npm install -g eslint 
-            eslint ./**/*.js
+              eslint ./**/*.js
 
   deploy:
     runs-on: ubuntu-latest
