@@ -1,15 +1,10 @@
 
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.contrib.auth import get_user_model, authenticate, login, logout
-<<<<<<< HEAD
-from .forms import LoginUserForm, UserCreateForm
-=======
-
-from .models import User
 from .forms import LoginUserForm,UserCreateForm
->>>>>>> parent of 089bcf2 (UPDATE: user linter-suggested adjustments)
+
 
 
 

@@ -28,16 +28,10 @@ class User(AbstractUser):
 class Grade(models.Model):
     grade_number = models.IntegerField()  # Класс (например, "6")
     litera = models.CharField(max_length=1)  # Буква литеры (например, "А")
-<<<<<<< HEAD
     head_teacher = models.ForeignKey(User, related_name="teacher", on_delete=models.CASCADE)  # Классный руководитель (Пользователь)
     students = models.ManyToManyField(User, related_name="student")  # Ученики (Пользователи)
     parents = models.ManyToManyField(User, related_name="parent")  # Родители  (Пользователи)
 
-=======
-    head_teacher = models.ForeignKey(User, related_name="teacher" , on_delete=models.CASCADE) # Классный руководитель (Пользователь)
-    students = models.ManyToManyField(User, related_name="student") # Ученики (Пользователи)
-    parents = models.ManyToManyField(User, related_name="parent") # Родители  (Пользователи)
->>>>>>> parent of 089bcf2 (UPDATE: user linter-suggested adjustments)
     def __str__(self):
         return f'{self.grade_number}"{self.litera}"класс' #Оглавление записи (например 6"А"класс)
 

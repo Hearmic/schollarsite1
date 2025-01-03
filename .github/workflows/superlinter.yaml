@@ -11,28 +11,11 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run Flake8
-<<<<<<< HEAD
-        uses: docker://python:3.12.2
-        with:
-          args: |
-            pip install flake8 flake8-django 
-              flake8 . --max-line-length=400 
-      # Run Black (auto-formatting) using Docker (Python 3.12.2)
-=======
         run: |
           python -m pip install --upgrade pip
           pip install flake8 flake8-django
               flake8 --max-line-length=200 --exclude=migrations.
-
-      # Run Pylint using Python 3.12.2
-      - name: Run Pylint
-        run: |
-          python -m pip install --upgrade pip
-          pip install pylint
-          pylint --max-line-length=200 --ignore=migrations .
-
       # Run Black (auto-formatting) using Python 3.12.2
->>>>>>> parent of 089bcf2 (UPDATE: user linter-suggested adjustments)
       - name: Run Black
         uses: docker://python:3.12.2
         with:
