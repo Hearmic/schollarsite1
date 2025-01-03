@@ -17,13 +17,12 @@ jobs:
               flake8 --max-line-length=400 --exclude=migrations.
       # Run Black (auto-formatting) using Python 3.12.2
       - name: Run Black
-        uses: docker://python:3.12.2
-        with:
-          args: |
+        run: |
+            python -m pip install --upgrade pip
             pip install --no-cache-dir black
               black --check .
       # Run Mypy (type checking) using Docker (Python 3.12.2)
-      - name: Run MypyS\
+      - name: Run Mypy
         uses: docker://python:3.12.2
         with:
           args: |
