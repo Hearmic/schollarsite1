@@ -16,11 +16,9 @@ jobs:
           pip install flake8 flake8-django
               flake8 --max-line-length=400 --exclude=migrations.
 
-      # Run Mypy (type checking) using Docker (Python 3.12.2)
       - name: Run Mypy
-        uses: docker://python:3.12.2
-        with:
-          args: |
+        run: |
+            python -m pip install --upgrade pip
             pip install mypy 
               mypy schollarsite1/
       # Run HTMLLint using Docker (Node.js)
