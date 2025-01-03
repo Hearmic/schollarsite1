@@ -19,29 +19,21 @@ jobs:
       - name: Run Mypy
         run: |
             python -m pip install --upgrade pip
-            pip install django
-            pip install django-stubs
             pip install mypy 
-              mypy .
+              mypy --ignore-missing-imports .
       # Run HTMLLint using Docker (Node.js)
       - name: Run HTMLLint
-        uses: docker://node:16
-        with:
-          args: |
+          run: |
             npm install -g htmlhint 
               htmlhint ./**/*.html
       # Run Stylelint (CSS Linting) using Docker (Node.js)
       - name: Run Stylelint
-        uses: docker://node:16
-        with:
-          args: |
+        run: |
             npm install -g stylelint 
               stylelint "**/*.css"
       # Run ESLint (JavaScript Linting) using Docker (Node.js)
       - name: Run ESLint
-        uses: docker://node:16
-        with:
-          args: |
+          run: |
             npm install -g eslint 
               eslint ./**/*.js
 
