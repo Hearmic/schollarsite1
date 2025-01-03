@@ -18,7 +18,7 @@ def create_suggestion(request):
             suggestion.save()
             return redirect('suggestions:suggestion_list')
         else:
-            # Handle form validation errors
+            # Handle form validation errors 
             pass
     else:
         form = SuggestionForm()

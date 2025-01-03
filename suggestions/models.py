@@ -1,5 +1,6 @@
 from django.db import models
 from users.models import User
+from django.template.defaultfilters import slugify
 from django.contrib.auth.models import Group
 
 

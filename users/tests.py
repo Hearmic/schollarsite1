@@ -1,7 +1,12 @@
+<<<<<<< HEAD
+=======
+from django.test import TestCase
+
+# Create your tests here.
+>>>>>>> parent of 089bcf2 (UPDATE: user linter-suggested adjustments)
 from django.test import TestCase, Client
 from django.urls import reverse
 from users.forms import LoginUserForm
-
 
 class LoginUserViewTestCase(TestCase):
     def setUp(self):
