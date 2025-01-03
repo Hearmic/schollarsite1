@@ -110,7 +110,7 @@ def create_schedule(request):
                 schedule.saturday_lesson9 = form.cleaned_data['saturday_lesson9']
                 # Сохранение расписания
                 schedule.save()
-            except school_schedule.DoesNotExist: # Создание нового расписания если такого еще не существует
+            except school_schedule.DoesNotExist:  # Создание нового расписания если такого еще не существует
                 form.save()
         else:
             errors = form.errors

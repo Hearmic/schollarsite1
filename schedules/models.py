@@ -1,6 +1,7 @@
 from django.db import models
 from users.models import User
 
+
 class Lessons(models.Model):
     lesson_type = models.CharField(max_length=20)
     teacher = models.ForeignKey(User, related_name='lesson_teacher', on_delete=models.CASCADE)
@@ -33,7 +34,7 @@ class school_schedule (models.Model):
     tuesday_lesson5 = models.ForeignKey(Lessons, related_name='tuesday_lesson5', null=True, blank=True, on_delete=models.CASCADE)
     tuesday_lesson6 = models.ForeignKey(Lessons, related_name='tuesday_lesson6', null=True, blank=True, on_delete=models.CASCADE)
     tuesday_lesson7 = models.ForeignKey(Lessons, related_name='tuesday_lesson7', null=True, blank=True, on_delete=models.CASCADE)
-    tuesday_lesson8= models.ForeignKey(Lessons, related_name='tuesday_lesson8', null=True, blank=True, on_delete=models.CASCADE)
+    tuesday_lesson8 = models.ForeignKey(Lessons, related_name='tuesday_lesson8', null=True, blank=True, on_delete=models.CASCADE)
     tuesday_lesson9 = models.ForeignKey(Lessons, related_name='tuesday_lesson9', null=True, blank=True, on_delete=models.CASCADE)
     # Среда
     wednesday_lesson1 = models.ForeignKey(Lessons, related_name='wednesday_lesson1', null=True, blank=True, on_delete=models.CASCADE)
@@ -75,7 +76,7 @@ class school_schedule (models.Model):
     saturday_lesson7 = models.ForeignKey(Lessons, related_name='saturday_lesson7', null=True, blank=True, on_delete=models.CASCADE)
     saturday_lesson8 = models.ForeignKey(Lessons, related_name='saturday_lesson8', null=True, blank=True, on_delete=models.CASCADE)
     saturday_lesson9 = models.ForeignKey(Lessons, related_name='saturday_lesson9', null=True, blank=True, on_delete=models.CASCADE)
-    #Воскресенье
+    # Воскресенье
     sunday_lesson1 = models.ForeignKey(Lessons, related_name='sunday_lesson1', null=True, blank=True, on_delete=models.CASCADE)
     sunday_lesson2 = models.ForeignKey(Lessons, related_name='sunday_lesson2', null=True, blank=True, on_delete=models.CASCADE)
     sunday_lesson3 = models.ForeignKey(Lessons, related_name='sunday_lesson3', null=True, blank=True, on_delete=models.CASCADE)
@@ -92,7 +93,7 @@ class school_schedule (models.Model):
 
 class event(models.Model):
     starts_on = models.DateField()
-    ends_on = models.DateField(blank=True,null=True)
+    ends_on = models.DateField(blank=True, null=True)
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=200)
     picture = models.ImageField()
@@ -101,7 +102,7 @@ class event(models.Model):
 class club_lesson(models.Model):
     name = models.CharField(max_length=20)
     club = models.CharField(max_length=20)
-    teacher = models.ForeignKey(User, related_name='club_teacher',null=True, blank=True, on_delete = models.CASCADE)
+    teacher = models.ForeignKey(User, related_name='club_teacher', null=True, blank=True, on_delete=models.CASCADE)
     classrom = models.CharField(max_length=20)
     day = models.CharField(max_length=20)
     lesson = models.IntegerField()
