@@ -10,15 +10,15 @@ def login_user(request):
     if request.method == 'POST':
         form = LoginUserForm(request.POST)
         if form.is_valid():  # проверка валидности формы
-            cd=form.cleaned_data  # получение данных из полей формы
-            user = authenticate(request, username=cd['username'],password=cd['password'])   # проверка пользователя и пароля
+            cd = form.cleaned_data  # получение данных из полей формы
+            user = authenticate(request, username=cd['username'], password=cd['password'])   # проверка пользователя и пароля
             if user and user.is_active:    # проверка активности пользователя
                 login(request, user)        # авторизация пользователя
                 return HttpResponseRedirect(reverse('main:home'))  # перенаправление на ссылку с именем "home" в облласти имен "main"
     else:
         form = LoginUserForm()
         return render(request, 'users/try_again.html', {'form': form})
-    return render(request, 'users/login.html', {'form': form}) 
+    return render(request, 'users/login.html', {'form': form})
 
 
 def logout_user(request):
