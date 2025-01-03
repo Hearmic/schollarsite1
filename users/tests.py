@@ -2,6 +2,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from users.forms import LoginUserForm
 
+
 class LoginUserViewTestCase(TestCase):
     def setUp(self):
         self.client = Client()
