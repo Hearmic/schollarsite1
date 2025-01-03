@@ -23,4 +23,4 @@ class exit_note(models.Model):
         return reverse('exit_notes_details', args=[str(self.id)])
 
     def __str__(self):
-        return self.created_by.first_name + ' ' + self.created_by.last_name + ' ' + self.created_on.strftime('%Y-%m-%d %H:%M:%S')+ ' ' +self.title
+        return self.created_by.first_name + ' ' + self.created_by.last_name + ' ' + self.created_on.strftime('%Y-%m-%d %H:%M:%S') + ' ' + self.title
