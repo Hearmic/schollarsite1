@@ -12,8 +12,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
-import django_heroku
-import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -69,17 +67,16 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-    #'corsheaedrs.middleware.CorsMiddleware'
 ]
-REST_FRAMEWORK ={
-    'DEFAULT_PERMISSION_CLASSES':[
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny'
     ]
 }
 
 ELASTICSEARCH_URL = 'http://localhost:9200'
 
-ELASTICSEARCH_DSL={
+ELASTICSEARCH_DSL = {
     'default': {
         'hosts': 'http://localhost:9200',
         'http_auth': ('username', 'password')
@@ -121,10 +118,10 @@ if db_user and db_password:
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': 'prestige_database',
-            'USER': db_user,  
-            'PASSWORD': db_password, 
-            'HOST': 'db',  
-            'PORT': 5432,  
+            'USER': db_user,
+            'PASSWORD': db_password,
+            'HOST': 'db',
+            'PORT': 5432,
         },
     }
 else:
@@ -159,7 +156,7 @@ AUTH_USER_MODEL = 'users.User'
 
 LANGUAGE_CODE = 'ru'
 
-TIME_ZONE = 'Asia/Almaty' #UTC/GMT +5
+TIME_ZONE = 'Asia/Almaty'  # UTC/GMT +5
 
 USE_I18N = True
 
@@ -177,7 +174,7 @@ STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),               # Assuming BASE_DIR is the project root 
+    os.path.join(BASE_DIR, 'static'),               # Assuming BASE_DIR is the project root
 ]
 
 MEDIA_URL = 'media/'

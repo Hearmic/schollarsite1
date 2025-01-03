@@ -1,11 +1,8 @@
 from django.shortcuts import redirect
 from django.contrib.auth.models import Group
 
-def redirect_to_login(request) :
-    if request.user.is_authenticated == True :
+def redirect_to_login(request):
+    if request.user.is_authenticated is True:
         return redirect('main:home')
-    else :
+    else:
         return redirect('users:login')
-    
-
-

@@ -1,5 +1,6 @@
 from django.shortcuts import redirect
 
+
 def allowed_user_groups(allowed_groups=[]):
     def decorator(view_func):
         def wrapper_func(request, *args, **kwargs):

@@ -14,14 +14,8 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from argparse import Namespace
-from xml.dom import NamespaceErr
 from django.contrib import admin
 from django.urls import path,include
-from django.views import static
-from django.conf.urls.static import static
-
-from schollarsite import settings
 from .views import redirect_to_login
 
 
@@ -30,14 +24,11 @@ urlpatterns = [
     path("select2/", include("django_select2.urls")),
     path('home/', include('main.urls', namespace='main')),
     path('admin/', admin.site.urls),
-    path('suggestions/', include('suggestions.urls',namespace='suggestions')),
-    path('', include('schedules.urls', namespace='schedulers')),
-    path('calender/',include('calender.urls', namespace='calender')),
-    path('map/',include('map.urls',namespace='map')),                           # Я сомневаюcь что получиться реализовать карту школы через html
+    path('suggestions/', include('suggestions.urls', namespace='suggestions')),
+    path('schedules/', include('schedules.urls', namespace='schedulers')),
     path('exit_notes/', include('exit_notes.urls', namespace='exit_notes')),
-    path('users/',include('users.urls', namespace = 'users')),
-    path('repair_requests/',include('repair_request.urls', namespace ='repair_requests')),
-    path('menu/',include('canteen_menu.urls', namespace='menu')),
-    path('schedules/',include('schedules.urls', namespace='schedules')),
-    path('news/',include('news.urls', namespace='news')),
+    path('users/', include('users.urls', namespace='users')),
+    path('menu/', include('canteen_menu.urls', namespace='menu')),
+    path('schedules/', include('schedules.urls', namespace='schedules')),
+    path('news/', include('news.urls', namespace='news')),
 ]
