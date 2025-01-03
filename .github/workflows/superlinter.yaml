@@ -29,6 +29,7 @@ jobs:
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/Hearmic/schollarsite1.git
           git add .
           git commit -m "Auto-format code with Black"
           git push
