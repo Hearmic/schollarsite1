@@ -1,5 +1,5 @@
 from django import forms
-from .models import *
+from .models import Lessons, school_schedule
 
 class LessonForm(forms.ModelForm):
     class Meta:
@@ -34,4 +34,3 @@ class SchoolScheduleForm(forms.ModelForm):
     class Meta:
         model = school_schedule
         fields = '__all__'
-        

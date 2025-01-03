@@ -1,25 +1,26 @@
-from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from schedules.models import school_schedule,Lessons
+from schedules.models import school_schedule, Lessons
 from schollarsite.decorators import allowed_user_groups
-from .forms import * 
+from .forms import SchoolScheduleForm, LessonForm
 
-# Create your views here.
+
 def main(request):
     schedules = school_schedule.objects.all()  # Fetch all schedules
     context = {
         'schedules': schedules,
-        'admin': ['Школьная администрация','Системный администратор']
+        'admin': ['Школьная администрация', 'Системный администратор']
     }
     return render(request, 'schedules/display.html', context)
+
 
 def schedule_detail(request, grade, litera):
     schedule = get_object_or_404(school_schedule, grade=grade, litera=litera)
     context = {
         'schedule': schedule,
-        'admin': ['Школьная администрация','Системный администратор']
+        'admin': ['Школьная администрация', 'Системный администратор']
         }
     return render(request, 'schedules/schedule_detail.html', context)
+
 
 @allowed_user_groups(['Школьная администрация', 'Системный администратор'])
 def create_schedule(request):
@@ -29,12 +30,11 @@ def create_schedule(request):
         'form': form,
         'errors': errors
     }
-    if request.method  == 'POST':
+    if request.method == 'POST':
         if form.is_valid():
             grade = form.cleaned_data['grade']
             litera = form.cleaned_data['litera']
             # Проверить существующие расписания по классу и литере
-            
             try:
                 schedule = school_schedule.objects.get(grade=grade, litera=litera)
                 # Обновление существующих полей
@@ -110,11 +110,12 @@ def create_schedule(request):
                 schedule.saturday_lesson9 = form.cleaned_data['saturday_lesson9']
                 # Сохранение расписания
                 schedule.save()
-            except: # Создание нового расписания если такого еще не существует
+            except school_schedule.DoesNotExist: # Создание нового расписания если такого еще не существует
                 form.save()
         else:
             errors = form.errors
-    return render (request, 'schedules/schedule_creation.html', context)
+    return render(request, 'schedules/schedule_creation.html', context)
+
 
 @allowed_user_groups(['Школьная администрация', 'Системный администратор'])
 def create_lesson(request):
@@ -122,16 +123,17 @@ def create_lesson(request):
     lessons = Lessons.objects.all()  # Получение всех уроков для выпадающего списка
     context = {
         'form': form,
-        'admin': ['Школьная администрация','Системный администратор'],
+        'admin': ['Школьная администрация', 'Системный администратор'],
         'lessons': lessons
     }
-    if request.method  == 'POST':
+    if request.method == 'POST':
         if form.is_valid:
             lesson = form.save(commit=False)
             lesson.lesson_type = form.cleaned_data['lesson_type']
             lesson.save()
             return redirect('schedules:create_lesson')
-    return render (request, 'schedules/lesson_creation.html', context)
+    return render(request, 'schedules/lesson_creation.html', context)
+
 
 def lesson_details(request, lesson_id):
     lesson = Lessons.objects.get(pk=lesson_id)
