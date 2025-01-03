@@ -67,6 +67,7 @@ class DinnerSetForm(forms.ModelForm):
 
 # --------------------- Creation of Dishes ---------------------
 
+
 class DishForm(forms.ModelForm):
     class Meta:
         model = Dish

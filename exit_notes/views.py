@@ -3,13 +3,15 @@ from datetime import timedelta
 from django.db.models import Q
 from django.http import HttpResponse
 from django.utils import timezone
-from django.shortcuts import render,redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import exit_note
 from .forms import ExitNoteForm
 from django.contrib.auth.decorators import login_required
 from users.models import Grade
 from django.conf import settings
 from django.urls import reverse
+
+
 @login_required
 def exit_notes_main(request):
     user = request.user
@@ -26,11 +28,11 @@ def exit_notes_main(request):
         Q(created_by__in=user_grade_students)
     )
     valid_notes = notes.filter(created_on__gt=timezone.now() - timedelta(hours=6))
-    
+
     context = {
         'valid_notes': valid_notes,
         'form': form,
-        'debug_state': settings.DEBUG 
+        'debug_state': settings.DEBUG
     }
 
     if request.method == 'POST':
@@ -43,20 +45,22 @@ def exit_notes_main(request):
             return redirect('exit_notes:exit_notes')
     return render(request, 'exit_notes/exit_notes_main.html', context)
 
+
 @login_required
 def exit_notes_details(request, note_id):
     note = exit_note.objects.get(pk=note_id)
     context = {
         'note': note,
-        'moderators': ['Модератор предложений','Школьная администрация','Системный администратор'],
+        'moderators': ['Модератор предложений', 'Школьная администрация', 'Системный администратор'],
         'students': ['Ученик'],
-        'teachers': ['Учитель','Классный руководитель', 'Завуч'],
-        'parents':['Родитель']
+        'teachers': ['Учитель', 'Классный руководитель', 'Завуч'],
+        'parents': ['Родитель']
         }
-    return render (request, 'exit_notes/exit_note_details.html' , context)
+    return render(request, 'exit_notes/exit_note_details.html', context)
+
 
 @login_required
-def parent_approve(request,note_id):
+def parent_approve(request, note_id):
     if request.method == 'POST':
         note = exit_note.objects.get(pk=note_id)
         user = request.user
@@ -64,8 +68,9 @@ def parent_approve(request,note_id):
         note.save()
     return redirect('exit_notes:exit_notes')
 
+
 @login_required
-def teacher_approve(request,note_id):
+def teacher_approve(request, note_id):
     if request.method == 'POST':
         note = exit_note.objects.get(pk=note_id)
         user = request.user
@@ -73,8 +78,9 @@ def teacher_approve(request,note_id):
         note.save()
     return redirect('exit_notes:exit_notes')
 
+
 @login_required
-def security_approve(request,note_id):
+def security_approve(request, note_id):
     if request.method == 'POST':
         note = exit_note.objects.get(pk=note_id)
         user = request.user
@@ -83,19 +89,17 @@ def security_approve(request,note_id):
         note.save()
     context = {
         'note': note,
-        'moderators': ['Модератор предложений','Школьная администрация','Системный администратор'],
-        'security':['Безопасность','Охранник']
+        'moderators': ['Модератор предложений', 'Школьная администрация', 'Системный администратор'],
+        'security': ['Безопасность', 'Охранник']
         }
     return render(request, 'exit_notes/exit_note_details.html', context)
 
-@login_required 
+
+@login_required
 def generate_qr_code(request, note_id):
-    # Fetch the note
-    note = get_object_or_404(exit_note, id=note_id)
-    
     # Construct the details page URL
     details_url = request.build_absolute_uri(reverse('exit_notes:exit_notes_details', args=[note_id]))
-    
+
     # Generate the QR code
     qr = qrcode.QRCode(
         version=1,
@@ -114,6 +118,7 @@ def generate_qr_code(request, note_id):
     img.save(response, "PNG")
     return response
 
+
 @login_required
 def deny(request, note_id):
     note = exit_note.objects.get(pk=note_id)
@@ -123,19 +128,20 @@ def deny(request, note_id):
     note.save()
     context = {
         'note': note,
-        'moderators': ['Модератор предложений','Школьная администрация','Системный администратор'],
+        'moderators': ['Модератор предложений', 'Школьная администрация', 'Системный администратор'],
         'students': ['Ученик'],
-        'teachers': ['Учитель','Классный руководитель', 'Завуч'],
-        'parents':['Родитель']
+        'teachers': ['Учитель', 'Классный руководитель', 'Завуч'],
+        'parents': ['Родитель']
         }
     return render(request, 'exit_notes/exit_note_details.html', context)
+
 
 @login_required
 def how_it_works(request):
     context = {
-        'moderators': ['Модератор предложений','Школьная администрация','Системный администратор'],
+        'moderators': ['Модератор предложений', 'Школьная администрация', 'Системный администратор'],
         'students': ['Ученик'],
-        'teachers': ['Учитель','Классный руководитель', 'Завуч'],
-        'parents':['Родитель']
+        'teachers': ['Учитель', 'Классный руководитель', 'Завуч'],
+        'parents': ['Родитель']
         }
-    return render (request, 'exit_notes/how_it_works.html' , context)
+    return render(request, 'exit_notes/how_it_works.html', context)
