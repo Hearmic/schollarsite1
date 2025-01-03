@@ -1,12 +1,12 @@
+<!DOCTYPE html>
 {% extends "main/base.html" %}
 {% load static %}
-
 <head>
     {% block title %} {{ material.title }} {% endblock title %}
     {% block stylesheet %}
-    <link rel="stylesheet" href="{% static "knowledge_base/questionnaire_styles.css" %}">
+    <link rel="stylesheet" href="{% static 'knowledge_base/questionnaire_styles.css' %}">
     {% endblock %}
-    <script src="{% static "knowledge_base/questionnaire_script.js" %}"></script>
+    <script src="{% static 'knowledge_base/questionnaire_script.js' %}"></script>
 </head>
 <body>
     {% block content %}
