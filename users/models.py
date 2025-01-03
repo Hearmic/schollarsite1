@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
-    surname = models.CharField(max_length=50, blank=True, null=True)
+    surname = models.CharField(max_length=50, blank=True)
     parents = models.ManyToManyField('self', blank=True)
     sudy_group = models.IntegerField(default=1)
     grade = models.ForeignKey("users.Grade", on_delete=models.CASCADE, blank=True, related_name='grade')
@@ -28,7 +28,7 @@ class User(AbstractUser):
 class Grade(models.Model):
     grade_number = models.IntegerField()  # Класс (например, "6")
     litera = models.CharField(max_length=1)  # Буква литеры (например, "А")
-    head_teacher = models.ForeignKey(User, related_name="teacher", on_delete=models.CASCADE) # Классный руководитель (Пользователь)
+    head_teacher = models.ForeignKey(User, related_name="teacher", on_delete=models.CASCADE)  # Классный руководитель (Пользователь)
     students = models.ManyToManyField(User, related_name="student")  # Ученики (Пользователи)
     parents = models.ManyToManyField(User, related_name="parent")  # Родители  (Пользователи)
 
