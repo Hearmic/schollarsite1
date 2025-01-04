@@ -38,8 +38,9 @@ jobs:
 
       - name: Deploy with SSH
         run: |
-            ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 -r admindev@89.218.24.244
-            cd schollarsite1
-            git pull 
-            docker-compose up -d --build
+            ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 admindev@89.218.24.244 <<EOF
+              cd schollarsite1
+              git pull
+              docker-compose up -d --build
+            EOF
 
