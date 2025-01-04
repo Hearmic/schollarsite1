@@ -1,10 +1,11 @@
+<!DOCTYPE html>
 {% extends "main/base.html" %}
 {% load static %}
 {% load custom_tags %}
 
 <html>
     <head>
-        {% block title %}Добавление аллергий{% endblock title %}
+        <title>Добавление аллергий</title>
     </head>
     <body>
         {% block content %}
@@ -18,7 +19,7 @@
         <h1>Список аллергий</h1>
         {% for allergies in allergies %}
             <p>{{ allergies.name }}</p>
-            <a href="{% url "menu:delete_allergie" allergies.id %}">Удалить</a>
+            <a href="{% url 'menu:delete_allergie' allergies.id %}">Удалить</a>
         {% endfor %}
         {% endblock content %}
     </body>
