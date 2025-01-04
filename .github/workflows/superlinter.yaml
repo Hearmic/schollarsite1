@@ -36,7 +36,7 @@ jobs:
         run: |
           echo "$PRIVATE_KEY" > private_key.pem 
           chmod 600 private_key.pem 
-          ssh -o StrictHostKeyChecking=no -i private_key.pem admindev@y89.218.24.244 <<EOF
+          ssh -o StrictHostKeyChecking=no -i private_key.pem admindev@89.218.24.244 <<EOF
           cd schollarsite1
           git pull 
           docker-compose up -d --build
