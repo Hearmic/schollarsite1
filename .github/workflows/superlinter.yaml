@@ -41,6 +41,7 @@ jobs:
             ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 admindev@89.218.24.244 <<EOF
               cd schollarsite1
               git pull
+              docker compose down
               docker-compose up -d --build
             EOF
 
