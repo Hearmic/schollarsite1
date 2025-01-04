@@ -36,9 +36,9 @@ jobs:
             echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519 
             chmod 600 ~/.ssh/id_ed25519
 
-      - name: Deploy with SCP
+      - name: Deploy with SSH
         run: |
-            scp -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 -r admindev@89.218.24.244
+            ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 -r admindev@89.218.24.244
             cd schollarsite1
             git pull 
             docker-compose up -d --build
