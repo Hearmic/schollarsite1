@@ -30,15 +30,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Deploy to remote server
+      - name: Setup SSH
         run: |
-          ssh -o StrictHostKeyChecking=no admindev@89.218.24.244 << 'EOF'
-            cd ~/schollarsite1  
-            git pull
-            docker-compose down && docker-compose up -d  
-          EOF
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H 89.218.24.244 >> ~/.ssh/known_hosts
+
+      - name: Deploy via SSH
+        run: |
+          ssh -i ~/.ssh/id_rsa admindev@89.218.24.244 "cd schollarsite1 && git pull && docker-compose up -d --build"
