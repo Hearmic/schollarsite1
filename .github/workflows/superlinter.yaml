@@ -33,8 +33,12 @@ jobs:
       - name: get SSH ad set permissions
         run: |
             mkdir -p ~/.ssh
-            echo "${{ secrets.SSH_PRIVATE_KEY }}"" > ~/.ssh/id_ed25519 && chmod 600 ~/.ssh/id_ed25519
+            echo "${{ secrets.SSH_PRIVATE_KEY }}"" > ~/.ssh/id_ed25519 
+            chmod 600 ~/.ssh/id_ed25519
+            cd schollarsite1
+            git pull 
+            docker-compose up -d --build
 
       - name: Deploy with SCP
-        run: scp -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 -r ./dist/* admindev@89.218.24.244
+        run: scp -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 -r admindev@89.218.24.244
 
