@@ -30,19 +30,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2 
 
-      - name: SSH and run commands
-        env:
-          PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }} 
+      - name: get SSH ad set permissions
         run: |
-          echo "$PRIVATE_KEY" > private_key.pem 
-          chmod 600 private_key.pem 
-          ssh -o StrictHostKeyChecking=no -i private_key.pem admindev@89.218.24.244 <<EOF
-          cd schollarsite1
-          git pull 
-          docker-compose up -d --build
-          EOF
-          rm -f private_key.pem # Remove the private key file after use for security
-    permissions:
-      contents: read
-      actions: write
-      id-token: write
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}"" > ~/.ssh/id_ed25519 && chmod 600 ~/.ssh/id_ed25519
+
+      - name: Deploy with SCP
+        run: scp -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 -r ./dist/* admindev@89.218.24.244
+
