@@ -1,33 +1,33 @@
+<!DOCTYPE html>
 {% extends "main/base.html" %}
 {% load static %}
 {% load custom_tags %}
-<!DOCTYPE html>
-
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  {% block title %} Список предложений {% endblock %}
-  {% block stylesheet %}
-    <link rel="stylesheet" href= "{% static 'suggestions/styles.css' %}">
-  {% endblock  %}
-  {% csrf_token %}
-</head>
-
-<body>
-  {% block content %}
-  
-    {% if request.user.is_authenticated %}
-    <div class="top-buttons">
-      
-      <a href=" {% url "suggestions:my_suggestions" %} " class = "btn">Мои предложения</a>
-      {% if request.user|has_group:moderators  %}
-        <a href="{% url 'suggestions:unmoderated_suggestion_list' %}" class="btn">Перейти на страницу модерации</a>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title %} Список предложений {% endblock %}
+    {% block stylesheet %}
+      <link rel="stylesheet" href= "{% static 'suggestions/styles.css' %}">
+    {% endblock  %}
+    {% csrf_token %}
+  </head>
+  <body>
+    {% block content %}
+      {% if request.user.is_authenticated %}
+      <div class="top-buttons">
+        
+        <a href=" {% url "suggestions:my_suggestions" %} " class = "btn">Мои предложения</a>
+        {% if request.user|has_group:moderators  %}
+          <a href="{% url 'suggestions:unmoderated_suggestion_list' %}" class="btn">Перейти на страницу модерации</a>
+        {% endif %}
+      </div>
       {% endif %}
-    </div>
-    {% endif %}
-    
-    <h1 class="main-title">Предложения</h1>
-    <p class="inform">Здесь отображаются предложения от всех. 
-      Вы можете проголосовать за или против. Каждый голос "за" приблежает предложение к выполнению, каждый голос прот
+      
+      <h1 class="main-title">Предложения</h1>
+      <p class="inform">
+        Здесь отображаются предложения от всех. 
+        Вы можете проголосовать за или против.
+        Каждый голос "за" приблежает предложение к выполнению, каждый голос против приближает предложение к отклонению.
       </p>
       <p class="call-to-action">
         Не нашли нужного решения?
@@ -35,75 +35,63 @@
       <a href="{% url 'suggestions:create_suggestion' %}" class="call-to-action-btn">
         Создайте свое предложение!
       </a>
+      <!-- Отобажение карточек предложений -->
       <div class="cards_container">
         {% for suggestion in suggestions %}
-        <div class="main-container" id="suggestion-{{ suggestion.id }}" 
-          data-id="{{ suggestion.id }}" 
-          data-title="{{ suggestion.title }}" 
-          data-description="{{ suggestion.description }}" 
-          data-date="{{ suggestion.created_date|date:'d.m.Y H:i' }}" 
-          onclick="openModal(this)">
-          <div id="maxForVotes" data-value="{{ max_for_votes }}"></div>
-          <div id="maxAgainstVotes" data-value="{{ max_against_votes }}"></div>
-          <div class="title">{{ suggestion.title }}</div>
-          <div class="description">{{ suggestion.description|truncatechars:50 }}</div>
-          <div class="progress-bar" onclick="openModal('for', {{ suggestion.id }}, 'за')">
-              <div class="label">За</div>
-              <div class="progress" id="progressForBar{{ suggestion.id }}" style="width: {% widthratio suggestion.votes_for suggestion.max_votes_for 100 %};"></div>
-              <div class="count" id="forCount{{ suggestion.id }}">{{ suggestion.votes_for }}/{{ suggestion.max_votes_for }}</div>
+          <div class="main-container" id="suggestion-{{ suggestion.id }}" 
+            data-id="{{ suggestion.id }}" 
+            data-title="{{ suggestion.title }}" 
+            data-description="{{ suggestion.description }}" 
+            data-date="{{ suggestion.created_date|date:'d.m.Y H:i' }}" 
+            data-maxVotesFor="{{ max_for_votes }}"
+            data-maxVotesAgainst="{{ max_against_votes }}"
+            onclick="openModal(this)"
+            >
+            <div class="title">{{ suggestion.title }}</div>
+            <div class="description">{{ suggestion.description|truncatechars:50 }}</div>
+            <div class="progress-bar">
+                <div class="label">За</div>
+                <div class="progress" id="progressForBar{{ suggestion.id }}" style="width: {% widthratio suggestion.votes_for suggestion.max_votes_for 100 %};"></div>
+                <div class="count" id="forCount{{ suggestion.id }}">{{ suggestion.votes_for }}/{{ suggestion.max_votes_for }}</div>
+            </div>
+            <div class="progress-bar">
+                <div class="label">Против</div>
+                <div class="progress" id="progressAgainstBar{{ suggestion.id }}" style="width: {% widthratio suggestion.votes_against suggestion.max_votes_against 100 %};"></div>
+                <div class="count" id="againstCount{{ suggestion.id }}">{{ suggestion.votes_against }}/{{ suggestion.max_votes_against }}</div>
+            </div>
           </div>
-          <div class="progress-bar" onclick="openModal('against', {{ suggestion.id }}, 'против')">
+        {% endfor %}
+      </div>
+
+      <!-- Модальное окно для отображения деталей предложения -->
+      <div class="modal" id="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+              <div class="modal-title" id="modal-suggestion-title"></div>
+              <div class="modal-date" id="modal-suggestion-date"></div>
+          </div>
+          <label>Название (тема)</label>
+          <input type="text" id="modal-title" class="input-title" disabled>
+          <label>Описание</label>
+          <textarea id="modal-description" class="input-description" disabled></textarea>
+          <div class="against-buttons">
+            <div class="progress-bar">
               <div class="label">Против</div>
               <div class="progress" id="progressAgainstBar{{ suggestion.id }}" style="width: {% widthratio suggestion.votes_against suggestion.max_votes_against 100 %};"></div>
               <div class="count" id="againstCount{{ suggestion.id }}">{{ suggestion.votes_against }}/{{ suggestion.max_votes_against }}</div>
+            <button type="button" class="modal-button" onclick="openConfirmModal('against', {{ suggestion.id }}, 'против')">Проголосовать против</button>
           </div>
-      </div>
-        {% endfor %}
-      </div>
-      <div class="modal">
-        <div class="modal-content">
-          <div class="close-btn" onclick="closeModal()">&times;</div>
-          <div class="modal-title"></div>
-          <div class="modal-description"></div>
-          <div class="modal-buttons">
-            <button type="button" class="" onclick="closeModal()">Закрыть</button>
+          <div class="for-buttons">
+            <div class="progress-bar">
+                <div class="label">За</div>
+                <div class="progress" id="progressForBar{{ suggestion.id }}" style="width: {% widthratio suggestion.votes_for suggestion.max_votes_for 100 %};"></div>
+                <div class="count" id="forCount{{ suggestion.id }}">{{ suggestion.votes_for }}/{{ suggestion.max_votes_for }}</div>
+            </div>
+            <button type="button" class="modal-button" onclick="openConfrimModal('for', {{ suggestion.id }}, 'за')">Проголосовать за</button>
           </div>
-        </div>  
+        </div>
       </div>
-      <!-- Модальное окно для отображения деталей заметки -->
-        <div class="modal" id="modal">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <div class="modal-title" id="modal-suggestion-title"></div>
-                  <div class="modal-date" id="modal-suggestion-date"></div>
-              </div>
-              <label>Название (тема)</label>
-              <input type="text" id="modal-title" class="input-title" disabled>
-              <label>Описание</label>
-              <textarea id="modal-description" class="input-description" disabled></textarea>
-              {% if request.user|has_group:'Родитель' %}
-                  <form id="parent-approve-form" method="post">
-                      {% csrf_token %}
-                      <button type="submit" class="submit-button">Подтвердить</button>
-                  </form>
-              {% endif %} 
-              
-              {% if request.user|has_group:'Классный руководитель' %}
-                  <form id="teacher-approve-form" method="post">
-                      {% csrf_token %}
-                      <button type="submit" class="submit-button">Подтвердить</button>
-                  </form>
-              {% endif %}
-              
-              {% if request.user|has_group:'Классный руководитель' or request.user|has_group:'Родитель' %}
-                  <form id="deny-form" method="post">
-                      {% csrf_token %}
-                      <button type="submit" class="submit-button">Отклонить</button>
-                  </form>
-              {% endif %}
-              <img alt="QR Code for Exit Note" id="modal-qr-code">
-          </div>
-      </div>
+
 
       <!-- Модальное окно для подтверждения голосования -->
       <div id="confirmation-modal" class="confirmation-modal">
@@ -112,17 +100,14 @@
           <form id="approve-form" method="POST">
             {% csrf_token %}
             <div class="modal-buttons">
-                <button type="button" class="" onclick="closeModal()">Отмена</button>
-                <button type="button" class="" onclick="confirmVote()">Подтвердить</button>
+                <button type="button" class="modal-button" onclick="closeModal()">Отмена</button>
+                <button type="button" class="modal-button" onclick="confirmVote()">Подтвердить</button>
             </div>
         </form>
         </div>
       </div>
+      
       <script src="{% static 'suggestions/script.js' %}"></script>
-    </body>
-    </html>
-    
-  {% endblock content %}
-</body>
-
+    {% endblock content %}
+  </body>
 </html>

@@ -9,7 +9,23 @@ document.getElementById("modal").addEventListener("click", function (e) {
     }
 });
 
-function openModal(type, suggestionId, voteLabel) {
+function openModal(suggestionElement) {
+    const suggestionId = suggestionElement.dataset.id;
+    const title = suggestionElement.querySelector('.suggestion-title').textContent;
+    const description = suggestionElement.querySelector('.suggestion-description').textContent;
+    const votesFor = parseInt(suggestionElement.querySelector('.suggestion-votes-for').textContent);
+    const votesAgainst = parseInt(suggestionElement.querySelector('.suggestion-votes-against').textContent);
+
+    document.getElementById('suggestionTitle').textContent = title;
+    document.getElementById('suggestionDescription').textContent = description;
+    document.getElementById('suggestionVotesFor').textContent = votesFor;
+    document.getElementById('suggestionVotesAgainst').textContent = votesAgainst;
+
+    document.getElementById('progressForBar').style.width = `${(votesFor / maxForVotes) * 100}%`;
+    document.getElementById('progressAgainstBar').style.width = `${(votesAgainst / maxAgainstVotes) * 100}%`;
+}
+
+function openConfirmModal(type, suggestionId, voteLabel) {
     currentVoteType = type;
     currentSuggestionId = suggestionId;
 

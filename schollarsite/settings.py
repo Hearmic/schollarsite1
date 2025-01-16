@@ -43,18 +43,13 @@ INSTALLED_APPS = [
     'django_elasticsearch_dsl',
 
     'main',
-    'map',
     'suggestions',
-    'calender',
     'exit_notes',
     'users',
     'rest_framework',
     'corsheaders',
-    'repair_request',
     'canteen_menu',
     'schedules',
-    'news',
-    'LostAndFound',
     'KnowledgeBase',
     ]
 

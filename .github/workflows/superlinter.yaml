@@ -40,7 +40,9 @@ jobs:
         run: |
             ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 admindev@89.218.24.244 <<EOF
               cd schollarsite1
-              git pull
+              git fetch --all
+              git reset --hard origin/main
+              git pull origin main
               docker compose down
               docker-compose up -d --build
             EOF
