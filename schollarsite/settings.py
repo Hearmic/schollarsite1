@@ -104,9 +104,8 @@ WSGI_APPLICATION = 'schollarsite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-db_user = os.environ["POSTGRES_USER"]
-db_password = os.environ["POSTGRES_PASSWORD"]
-
+db_user = os.getenv("POSTGRES_USER", None)
+db_password = os.getenv("POSTGRES_PASSWORD", None)
 
 if db_user and db_password:
     DATABASES = {
