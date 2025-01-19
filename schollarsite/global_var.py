@@ -14,5 +14,5 @@ User_roles = {
     'head_of_press_center': 'Глава пресс-центра',
     'memeber_of_press_centre': 'Участник пресс-центра',
     'head_of_transportation': 'Глава развозки',
-    '': '',
+    '': 'Водитель развозки',
 }
