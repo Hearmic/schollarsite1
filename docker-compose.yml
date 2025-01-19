@@ -43,6 +43,8 @@ services:
       - SECRET_KEY=${SECRET_KEY}
       - DEBUG_STATE=${DEBUG_STATE}
     build: ./
+    env_file:
+      - .env
     volumes:
       - .:/app
     depends_on:
