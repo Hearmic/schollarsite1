@@ -4,12 +4,14 @@ from django.db import models
 from users.models import User
 from django.urls import reverse
 
+def get_deactivate_time():
+    return timezone.now() + timedelta(minutes=15)
 
 class exit_note(models.Model):
     title = models.CharField(max_length=20)
     description = models.TextField(blank=True)
     created_on = models.DateTimeField(auto_now_add=True)
-    deactivate_on = models.DateTimeField(default=timezone.now() + timedelta(minutes=15))
+    deactivate_on = models.DateTimeField(default=get_deactivate_time())
     created_by = models.ForeignKey(User, related_name='exit_note_created_by', on_delete=models.CASCADE, null=True, blank=True)
     parent_approved = models.ForeignKey(User, related_name='exit_note_parent_approved', on_delete=models.CASCADE, null=True, blank=True)
     teacher_approved = models.ForeignKey(User, related_name='exit_note_teacher_approved', on_delete=models.CASCADE, null=True, blank=True)
