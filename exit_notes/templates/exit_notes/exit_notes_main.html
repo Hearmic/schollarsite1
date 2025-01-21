@@ -34,7 +34,7 @@
                 data-teacher-approved="{{ note.teacher_approved|yesno:'true,false' }}"
                 onclick="openModal(this)">
                 <div class="note-title">{{ note.title }}</div>
-                <div class="note-date">Создана: {{ note.created_on|date:'d.m.Y H:i' }}</div>
+                <div class="note-date"> Создана: {{ note.created_on|date:'d.m.Y H:i' }}  Для:{{ note.created_by.first_name }} {{ note.created_by.last_name }}</div>
             </div>
             {% endfor %}
         </div>

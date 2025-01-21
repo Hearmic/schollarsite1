@@ -6,9 +6,15 @@ from django.contrib.auth.models import Group
 
 
 class LoginUserForm(forms.Form):
-    username = forms.CharField(label='Имя', max_length=20, widget=forms.TextInput(attrs={'class': 'form-input'}))
-    password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-input'}))
-
+    username = forms.CharField(
+        label='Имя',
+        max_length=20,
+        widget=forms.TextInput(attrs={'class': 'input-field', 'placeholder': 'Логин'})
+    )
+    password = forms.CharField(
+        label='Пароль',
+        widget=forms.PasswordInput(attrs={'class': 'input-field', 'placeholder': 'Пароль'})
+    )
 
 class UserCreateForm(UserCreationForm):
     class Meta:
