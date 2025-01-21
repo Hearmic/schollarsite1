@@ -4,8 +4,10 @@ from django.db import models
 from users.models import User
 from django.urls import reverse
 
+
 def get_deactivate_time():
     return timezone.now() + timedelta(minutes=15)
+
 
 class exit_note(models.Model):
     title = models.CharField(max_length=20)
