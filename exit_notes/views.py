@@ -13,9 +13,8 @@ from django.urls import reverse
 
 
 @login_required
-def exit_notes_main(request):
+def view_notes(request):
     user = request.user
-    form = ExitNoteForm()
     try:
         user_grade = Grade.objects.get(students=user)
     except Grade.DoesNotExist:
@@ -31,9 +30,19 @@ def exit_notes_main(request):
 
     context = {
         'valid_notes': valid_notes,
-        'form': form,
         'debug_state': settings.DEBUG
     }
+    return render(request, 'exit_notes/view_notes.html', context)
+
+
+@login_required
+def create_note(request):
+    user = request.user
+    form = ExitNoteForm()
+    try:
+        user_grade = Grade.objects.get(students=user)
+    except Grade.DoesNotExist:
+        user_grade = None
 
     if request.method == 'POST':
         form = ExitNoteForm(request.POST)
@@ -42,8 +51,13 @@ def exit_notes_main(request):
             note.created_by = user
             note.head_teacher = user_grade.head_teacher if user_grade else None
             note.save()
-            return redirect('exit_notes:exit_notes')
-    return render(request, 'exit_notes/exit_notes_main.html', context)
+            return redirect('exit_notes:view_notes')
+
+    context = {
+        'form': form,
+        'debug_state': settings.DEBUG
+    }
+    return render(request, 'exit_notes/create_note.html', context)
 
 
 @login_required
@@ -66,7 +80,7 @@ def parent_approve(request, note_id):
         user = request.user
         note.parent_approved = user
         note.save()
-    return redirect('exit_notes:exit_notes')
+    return redirect('exit_notes:view_notes')
 
 
 @login_required
@@ -76,7 +90,7 @@ def teacher_approve(request, note_id):
         user = request.user
         note.teacher_approved = user
         note.save()
-    return redirect('exit_notes:exit_notes')
+    return redirect('exit_notes:view_notes')
 
 
 @login_required
