@@ -1,0 +1,80 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load custom_tags %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static 'exit-notes/main-styles.css' %}">
+{% endblock %}
+
+{% block content %}
+{% if debug_state %}
+    {{ request.user.groups.all }}
+    <p>Is Родитель? {{ request.user|has_group:'Родитель' }}</p>
+    <p>Is Классный руководитель? {{ request.user|has_group:'Классный руководитель' }}</p>
+    <p>Is Модератор предложений? {{ request.user|has_group:'Модератор предложений' }}</p>
+    <p>Is Системный администратор? {{ request.user|has_group:'Системный администратор' }}</p>
+{% endif %}
+
+<div class="main-container">
+    <!-- Кнопка для создания новой записки -->
+    <div class="exit-notes-button-container">
+        <a href="{% url 'exit_notes:create_note' %}" class="exit-notes-nav-button">Создать новую записку</a>
+    </div>
+
+    <!-- Секция для отображения заметок -->
+    <div class="exit-notes-notes-section">
+        <h2>Мои записки</h2>
+        <div id="notes-list">
+            {% for note in valid_notes %}
+            <div class="exit-notes-note" 
+                data-id="{{ note.id }}" 
+                data-title="{{ note.title }}" 
+                data-description="{{ note.description }}" 
+                data-date="{{ note.created_on|date:'d.m.Y H:i' }}" 
+                data-parent-approved="{{ note.parent_approved|yesno:'true,false' }}"
+                data-teacher-approved="{{ note.teacher_approved|yesno:'true,false' }}"
+                onclick="openModal(this)">
+                <div class="exit-notes-note-title">{{ note.title }}</div>
+                <div class="exit-notes-note-date"> Создана: {{ note.created_on|date:'d.m.Y H:i' }}  Для:{{ note.created_by.first_name }} {{ note.created_by.last_name }}</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Модальное окно для отображения деталей заметки -->
+    <div class="exit-notes-modal" id="modal">
+        <div class="exit-notes-modal-content">
+            <div class="exit-notes-modal-header">
+                <div class="exit-notes-modal-title" id="modal-note-title"></div>
+                <div class="exit-notes-modal-date" id="modal-note-date"></div>
+            </div>
+            <label>Название (тема)</label>
+            <input type="text" id="modal-title" class="exit-notes-input-title" disabled>
+            <label>Описание</label>
+            <textarea id="modal-description" class="exit-notes-input-description" disabled></textarea>
+            {% if request.user|has_group:'Родитель' %}
+                <form id="parent-approve-form" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="exit-notes-submit-button">Подтвердить</button>
+                </form>
+            {% endif %} 
+            
+            {% if request.user|has_group:'Классный руководитель' %}
+                <form id="teacher-approve-form" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="exit-notes-submit-button">Подтвердить</button>
+                </form>
+            {% endif %}
+            
+            {% if request.user|has_group:'Классный руководитель' or request.user|has_group:'Родитель' %}
+                <form id="deny-form" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="exit-notes-submit-button">Отклонить</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'exit-notes/script.js' %}"></script>
+{% endblock %}

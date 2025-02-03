@@ -14,13 +14,27 @@ from schollarsite.decorators import allowed_user_groups
 
 
 @login_required
-def exit_notes_main(request): 
+def view_notes(request):
+    user = request.user
+    form = ExitNoteForm()
+    try:
+        user_grade = Grade.objects.get(students=user)
+    except Grade.DoesNotExist:
+        user_grade = None
+
+    user_grade_students = user_grade.students.all() if user_grade else []
+    notes = exit_note.objects.filter(
+        Q(created_by=user) |
+        Q(created_by__in=user.parents.all()) |
+        Q(created_by__in=user_grade_students)
+    )
+    valid_notes = notes.filter(created_on__gt=timezone.now() - timedelta(hours=6))
+
     context = {
-        'passes': get_valid_passes_for_user(request),
-        'notes': get_valid_notes_for_user(request),
+        'valid_notes': valid_notes,
+        'form': form,
         'debug_state': settings.DEBUG
     }
-    return render(request, 'exit_notes/exit_notes_main.html', context)
 
 def request_exit_note(request):
     user = request.user
@@ -31,16 +45,8 @@ def request_exit_note(request):
             note.created_by = user
             note.teacher = user.grade.head_teacher if user.grade else None
             note.save()
-    return render(request, 'exit_notes/request_note.html')
-def get_valid_notes_for_user(request):
-    user = request.user
-    notes = ExitNote.objects.filter(
-        Q(student=user) |
-        Q(parent=user) |
-        Q(teacher=user)
-    )
-    valid_notes = notes.filter(deactivate_on__gt=timezone.now() - timedelta(hours=6))
-    return valid_notes
+            return redirect('exit_notes:exit_notes')
+    return render(request, 'exit_notes/exit_notes_main.html', context)
 
 
 @login_required
@@ -51,7 +57,7 @@ def parent_approve_note(request, note_id):
         note = ExitNote.objects.get(pk=note_id)
         note.parent_approved = user
         note.save()
-    return 
+    return redirect('exit_notes:exit_notes')
 
 
 @login_required
@@ -62,7 +68,8 @@ def teacher_approve_note(request, note_id):
         user = request.user
         note.teacher_approved = user
         note.save()
-    return 
+    return redirect('exit_notes:exit_notes')
+
 
 @login_required
 @allowed_user_groups(['Безопасность','Системный администратор'])

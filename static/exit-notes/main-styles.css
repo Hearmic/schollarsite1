@@ -9,7 +9,7 @@ body {
   height: 100vh;
 }
 
-.main-container {
+.exit-notes-main-container {
   background-color: #C6D6FF;
   width: 1200px;
   max-width: 800px;
@@ -23,7 +23,7 @@ body {
   gap: 50px;
 }
 
-.separator {
+.exit-notes-separator {
   width: 1px; 
   background-color: #00008B; 
   height: 100%; 
@@ -33,7 +33,7 @@ body {
   border-radius: 10px;
 }
 
-.notes-section {
+.exit-notes-notes-section {
   background-color: #FFFFFF;
   border-radius: 15px;
   padding: 15px;
@@ -43,7 +43,7 @@ body {
   margin-bottom: 0;
 }
 
-.notes-section h2 {
+.exit-notes-notes-section h2 {
   color: #00008B;
   margin: 0; 
   font-size: 25px;
@@ -52,14 +52,14 @@ body {
   font-weight: 900 !important; 
 }
 
-#notes-list-container {
+.exit-notes-notes-list-container {
   flex-grow: 1;
   border-radius: 15px;
   background-color: #00008b;
   margin-top: 10px; 
 }
 
-.note {
+.exit-notes-note {
   background-color: #e6efff;
   padding: 10px;
   margin: 10px 0 0 0;
@@ -69,22 +69,22 @@ body {
   border-radius: 15px;
 }
 
-.note:last-child {
+.exit-notes-note:last-child {
   margin-bottom: 0;
 }
 
-.note-title {
+.exit-notes-note-title {
   font-size: 20px;
   color: #00008b;
 }
 
-.note-date {
+.exit-notes-note-date {
   font-size: 12px;
   color: #000000;
   margin-top: 5px;
 }
 
-.create-note-section {
+.exit-notes-create-note-section {
   width: 50%;
   position: relative;
   display: flex;
@@ -93,7 +93,7 @@ body {
   box-sizing: border-box;
 }
 
-.create-note-section h2 {
+.exit-notes-create-note-section h2 {
   color: #00008b;
   margin-bottom: 20px;
   font-size: 30px;
@@ -104,18 +104,18 @@ body {
   font-size: 35px; 
 }
 
-.create-note-section label {
+.exit-notes-create-note-section label {
   color: #00008b;
   display: block;
   margin: 15px 0 5px;
 }
 
-.input-wrapper {
+.exit-notes-input-wrapper {
   position: relative;
   width: 100%;
 }
 
-.input-title, .input-description {
+.exit-notes-input-title, .exit-notes-input-description {
   background-color: #FFFFFF;
   width: 100%;
   padding: 10px;
@@ -128,23 +128,23 @@ body {
   transition: border-color 0.3s ease; 
 }
 
-.input-title:focus, .input-description:focus {
+.exit-notes-input-title:focus, .exit-notes-input-description:focus {
   border-color: #5C7DCD; 
   background-color: #f5faff; 
 }
 
-.input-description {
+.exit-notes-input-description {
   height: 150px;
   resize: none;
   font-size: 14px;
   color: #00008b;
 }
-.input-title
-{
-color: #00008b;
+
+.exit-notes-input-title {
+  color: #00008b;
 }
 
-.submit-button {
+.exit-notes-submit-button {
   background: linear-gradient(to right, #5C7DCD, #11368C);
   color: #FFFFFF;
   border: none;
@@ -158,7 +158,7 @@ color: #00008b;
   font-weight: Bold
 }
 
-.info-box {
+.exit-notes-info-box {
   background-color: #e6efff;
   color: #0043E0;
   padding: 9px 35px;
@@ -172,7 +172,7 @@ color: #00008b;
   white-space: nowrap; 
 }
 
-.modal {
+.exit-notes-modal {
   display: none;
   position: fixed;
   top: 0;
@@ -186,17 +186,16 @@ color: #00008b;
   font-family: 'Montserrat', sans-serif;
 }
 
-.modal-content {
+.exit-notes-modal-content {
   background-color: #C6D6FF;
   border-radius: 15px;
   padding: 20px;
   width: 80%;
   max-width: 400px;
   box-sizing: border-box;
-  
 }
 
-.modal-header {
+.exit-notes-modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -206,27 +205,52 @@ color: #00008b;
   font-size: 20px;
 }
 
-.modal-title {
+.exit-notes-modal-title {
   color: #00008B;
 }
 
-.modal-date {
+.exit-notes-modal-date {
   color: #00008B;
 }
 
-.modal label {
+.exit-notes-modal label {
   color: #00008b;
   display: block;
   margin: 10px 0 5px;
 }
 
-.counter {
+.exit-notes-counter {
   position: absolute;
   top: 36%;
   right: 10px;
   transform: translateY(-50%);
   font-size: 14px;
   color: #00008B;
+}
+
+.exit-notes-nav-button {
+  background-color: #00008B;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  text-decoration: none;
+  display: inline-block;
+  margin: 10px 0;
+  font-family: 'Montserrat', sans-serif;
+  transition: background-color 0.3s ease;
+}
+
+.exit-notes-nav-button:hover {
+  background-color: #000066;
+}
+
+.exit-notes-button-container {
+  text-align: center;
+  margin-bottom: 20px;
+  width: 100%;
 }
 
 @media (max-width: 768px) {

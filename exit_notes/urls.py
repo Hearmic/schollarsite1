@@ -5,7 +5,8 @@ from exit_notes import views
 app_name = 'exit_notes'
 
 urlpatterns = [
-    path('', views.exit_notes_main, name='exit_notes'),
+    path('', views.view_notes, name='view_notes'),
+    path('create/', views.create_note, name='create_note'),
     path('how_it_works/', views.how_it_works, name='how_it_works'),
     path('<int:note_id>/', views.exit_notes_details, name='exit_notes_details'),
     path('<int:note_id>/parent_approve/', views.parent_approve, name="parent_approve"),
