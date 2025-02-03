@@ -228,3 +228,14 @@ color: #00008b;
   font-size: 14px;
   color: #00008B;
 }
+
+@media (max-width: 768px) {
+  .main-container {
+      flex-direction: column;
+      width: 90%;
+      gap: 20px;
+  }
+  .notes-section, .create-note-section {
+      width: 100%;
+  }
+}

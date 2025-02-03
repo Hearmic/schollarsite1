@@ -96,7 +96,7 @@
             {% if request.user|has_group:'Классный руководитель' or request.user|has_group:'Родитель' %}
                 <form id="deny-form" method="post">
                     {% csrf_token %}
-                    <button type="submit" class="submit-button">Отклонить</button>
+                    <button types="submit" class="submit-button">Отклонить</button>
                 </form>
             {% endif %}
             <img alt="QR Code for Exit Note" id="modal-qr-code">

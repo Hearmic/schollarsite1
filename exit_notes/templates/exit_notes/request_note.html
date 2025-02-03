@@ -1,0 +1,41 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load custom_tags %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Записки</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    {% block stylesheet %}<link rel="stylesheet" href="{% static 'exit-notes/main-styles.css' %}">{% endblock %}
+</head>
+<body>
+    {% block content %}
+    <div class="create-note-section">
+        <h2>Создать записку</h2>
+        <form method="post" id="create-note-form">
+            {% csrf_token %}
+            <label for="note-title">Название (тема) <span id="title-counter">0/15</span></label>
+            <input 
+                type="text" 
+                id="note-title" 
+                name="title" 
+                class="input-title" 
+                placeholder="..." 
+                maxlength="15" 
+                oninput="updateCounter()" 
+                required>
+            <label for="note-description">Описание</label>
+            <textarea 
+                id="note-description" 
+                name="description" 
+                class="input-description" 
+                placeholder="..."
+                required></textarea>
+            <button type="submit" class="submit-button">Создать</button>
+        </form>
+    </div>
+    <script src="{% static 'exit-notes/script.js' %}"></script>
+    {% endblock content %}
+</body>

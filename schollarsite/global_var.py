@@ -8,6 +8,7 @@ User_roles = {
     'canteen_worker': 'Работник столовой',
     'suggestions_moderator': 'Модератор предложений',
     'head_of_security': 'Заведующий безопасности',
+    'security':'Безопасность',
     'head_of_household': 'Заведующий хозяйством',
     'technician': 'Техник',
     'household_worker': 'Хоз рабочий',

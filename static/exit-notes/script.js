@@ -24,7 +24,7 @@ function openModal(noteElement) {
     const parentForm = document.getElementById("parent-approve-form");
     const teacherForm = document.getElementById("teacher-approve-form");
     const denyForm = document.getElementById("deny-form");
-
+    
     if (qrCodeImage) {
         if (parentApproved && teacherApproved) {
             qrCodeImage.style.display = "block"; // Показываем QR-код
@@ -50,7 +50,16 @@ function openModal(noteElement) {
     }
 
     // Show the modal
-    document.getElementById("modal").style.display = "flex";
+    const modalElement = document.getElementById("modal");
+    modalElement.style.display = "flex";
+
+    if (modalElement) {
+        modalElement.addEventListener("click", function (e) {
+            if (e.target === this) {
+                this.style.display = "none";
+            }
+        });
+    }
 }
 
 function updateCounter() {
